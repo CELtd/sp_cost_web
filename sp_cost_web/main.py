@@ -207,10 +207,9 @@ def plot_costs(df):
             df_copy[c] = df_copy[c] * -1
     df_copy = df_copy.drop(columns=['profit'])
     df_positive = df_copy[['SP Type', 'block_rewards', 'deal_income']]
-    df_negative = df_copy.drop(
-        columns=['SP Type', 'pledge_cost', 'gas_cost', 'power_cost', 
+    df_negative = df_copy[['SP Type', 'pledge_cost', 'gas_cost', 'power_cost', 
                  'bandwidth_cost', 'staff_cost', 'sealing_cost', 'data_prep_cost', 
-                 'bd_cost', 'extra_copy_cost', 'cheating_cost'])
+                 'bd_cost', 'extra_copy_cost', 'cheating_cost']]
     dff_positive = pd.melt(df_positive, id_vars=['SP Type'])
     dff_negative = pd.melt(df_negative, id_vars=['SP Type'])
     # dff = pd.melt(df_copy, id_vars=['SP Type'])
