@@ -267,8 +267,8 @@ def main():
             'Onboarding Scenario', ('Pessimistic', 'Status-Quo', 'Optimistic'), key="onboarding_scenario",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
+        st.button("Compute!", on_change=compute_costs, kwargs=compute_costs_kwargs, key="forecast_button")
     
-    compute_costs(**compute_costs_kwargs)
     if "debug_string" in st.session_state:
         st.markdown(
             f'<div class="debug">{ st.session_state["debug_string"]}</div>',
