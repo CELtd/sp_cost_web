@@ -83,7 +83,7 @@ def compute_costs(scenario2erpt=None):
     filp_multiplier = 10
 
     onboarding_scenario = st.session_state['onboarding_scenario'].lower()
-    print(scenario2erpt.keys())
+    # print(scenario2erpt.keys())
     erpt = scenario2erpt[onboarding_scenario]
     
     exchange_rate =  st.session_state['filprice_slider']
