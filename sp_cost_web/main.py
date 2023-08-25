@@ -201,7 +201,11 @@ def plot_costs(df):
     )
     st.altair_chart(acounting_chart, use_container_width=True)
     
-    dff = pd.melt(df, id_vars=['SP Type'])
+    df_copy = df.copy()
+    for c in df_copy.columns:
+        if 'cost' in c:
+            df_copy[c] = df_copy[c] * -1
+    dff = pd.melt(df_copy, id_vars=['SP Type'])
     angelo_chart = alt.Chart(dff).mark_bar().encode(
             x=alt.X("value:Q", title=""),
             y=alt.Y("SP Type:N", title=""),
