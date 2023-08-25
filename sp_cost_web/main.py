@@ -213,8 +213,9 @@ def plot_costs(df):
         y=alt.Y('profit', title="($/TiB/Yr)"),
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20')),
     ).configure_axis(
-        labelAngle=0
-    ).configure_text(fontSize=40)
+        labelAngle=0,
+        labelFontSize=20
+    )
     st.altair_chart(acounting_chart, use_container_width=True)
     
     df_copy = df.copy()
