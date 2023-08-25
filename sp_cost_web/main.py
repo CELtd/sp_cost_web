@@ -206,17 +206,50 @@ def plot_costs(df):
         if 'cost' in c:
             df_copy[c] = df_copy[c] * -1
     df_copy = df_copy.drop(columns=['profit'])
-    dff = pd.melt(df_copy, id_vars=['SP Type'])
-    angelo_chart = alt.Chart(dff).mark_bar().encode(
+    df_positive = df_copy[['SP Type', 'block_rewards', 'deal_income']]
+    df_negative = df_copy.drop(
+        columns=['SP Type', 'pledge_cost', 'gas_cost', 'power_cost', 
+                 'bandwidth_cost', 'staff_cost', 'sealing_cost', 'data_prep_cost', 
+                 'bd_cost', 'extra_copy_cost', 'cheating_cost'])
+    dff_positive = pd.melt(df_positive, id_vars=['SP Type'])
+    dff_negative = pd.melt(df_negative, id_vars=['SP Type'])
+    # dff = pd.melt(df_copy, id_vars=['SP Type'])
+    # angelo_chart = alt.Chart(dff).mark_bar().encode(
+    #         x=alt.X("value:Q", title=""),
+    #         y=alt.Y("SP Type:N", title=""),
+    #         color=alt.Color("variable", type="nominal", title=""),
+    #         order=alt.Order("variable", sort="descending"),
+    #     )
+    chart1 = (
+    alt.Chart(dff_positive).mark_bar().encode(
             x=alt.X("value:Q", title=""),
             y=alt.Y("SP Type:N", title=""),
-            color=alt.Color("variable", type="nominal", title=""),
+            color=alt.Color(
+                'variable',
+                scale=alt.Scale(
+                    scheme='goldred'
+                ),
+            ),
             order=alt.Order("variable", sort="descending"),
         )
+    )
+    chart2 = (
+        alt.Chart(dff_negative).mark_bar().encode(
+            x=alt.X("value:Q", title=""),
+            y=alt.Y("SP Type:N", title=""),
+            color=alt.Color(
+                'variable',
+                scale=alt.Scale(
+                    scheme='greenblue'
+                ),
+            ),
+            order=alt.Order("variable", sort="descending"),
+        )
+    )
     vline = (
         alt.Chart(pd.DataFrame({'x':[0]})).mark_rule(color='black').encode(x='x', strokeWidth=alt.value(2))
     )
-    st.altair_chart(angelo_chart+vline, use_container_width=True)
+    st.altair_chart((chart1+chart2).resolve_scale(color='independent')+vline, use_container_width=True)
 
     # NOTE: not sure why formatting is not working
     format_mapping = {}
