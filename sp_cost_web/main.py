@@ -83,6 +83,7 @@ def compute_costs(scenario2erpt=None):
     filp_multiplier = 10
 
     onboarding_scenario = st.session_state['onboarding_scenario'].lower()
+    print(scenario2erpt.keys())
     erpt = scenario2erpt[onboarding_scenario]
     
     exchange_rate =  st.session_state['filprice_slider']
@@ -189,13 +190,6 @@ def compute_costs(scenario2erpt=None):
     plot_costs(df)
 
 def plot_costs(df):
-    # sort by profit
-    # df_sorted = df.sort_values(by=['profit'], ascending=False).reset_index(drop=True)
-    # df_sorted['revenue'] = df_sorted['revenue'].astype(float)
-    # df_sorted['cost'] = df_sorted['cost'].astype(float)
-    # df_sorted['profit'] = df_sorted['profit'].astype(float)
-
-    # st.bar_chart(data=df_sorted, x='SP Type', y=['revenue', 'cost'])
     acounting_chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('SP Type', sort='-y'),
         y=alt.Y('profit'),
