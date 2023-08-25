@@ -189,7 +189,7 @@ def compute_costs(scenario2erpt=None):
 
 def plot_costs(df):
     # sort by profit
-    df_sorted = df.sort_values(by=['profit'], ascending=False)
+    df_sorted = df.sort_values(by=['profit'], ascending=False).reset_index(drop=True)
     st.dataframe(df_sorted)
     st.bar_chart(data=df_sorted, x='SP Type', y=['profit'])
 
