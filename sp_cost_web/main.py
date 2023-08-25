@@ -213,7 +213,10 @@ def plot_costs(df):
             color=alt.Color("variable", type="nominal", title=""),
             order=alt.Order("variable", sort="descending"),
         )
-    st.altair_chart(angelo_chart, use_container_width=True)
+    vline = (
+        alt.Chart(pd.DataFrame({'x':[0]})).mark_rule(color='black').encode(x='x', strokeWidth=alt.value(2))
+    )
+    st.altair_chart(angelo_chart+vline, use_container_width=True)
 
     # NOTE: not sure why formatting is not working
     format_mapping = {}
