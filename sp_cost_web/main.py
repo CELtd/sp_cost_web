@@ -206,14 +206,12 @@ def compute_costs(scenario2erpt=None):
     plot_costs(df)
 
 def plot_costs(df):
-    acounting_chart = alt.Chart(df).mark_bar().encode(
+    acounting_chart = alt.Chart(df, title="Profit").mark_bar().encode(
         x=alt.X('SP Type', sort='-y'),
         y=alt.Y('profit', title="($/TiB/Yr)"),
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20')),
     ).configure_axis(
         labelAngle=45
-    ).configure_title(
-        text="Profit"
     )
     st.altair_chart(acounting_chart, use_container_width=True)
     
@@ -236,7 +234,7 @@ def plot_costs(df):
     #         order=alt.Order("variable", sort="descending"),
     #     )
     chart1 = (
-    alt.Chart(dff_positive).mark_bar().encode(
+    alt.Chart(dff_positive, title="Cost Breakdown").mark_bar().encode(
             x=alt.X("value:Q", title="($/TiB/Yr)"),
             y=alt.Y("SP Type:N", title=""),
             color=alt.Color(
@@ -248,8 +246,6 @@ def plot_costs(df):
             ),
             order=alt.Order("variable", sort="descending")
         )
-    ).configure_title(
-        text="Revenue"
     )
     chart2 = (
         alt.Chart(dff_negative).mark_bar().encode(
