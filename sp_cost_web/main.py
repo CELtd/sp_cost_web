@@ -268,7 +268,7 @@ def plot_costs(df):
     vline = (
         alt.Chart(pd.DataFrame({'x':[0]})).mark_rule(color='black').encode(x='x', strokeWidth=alt.value(2))
     )
-    st.altair_chart((chart1+chart2).configure_axis(labelFontSize=20, titleFontSize=20).resolve_scale(color='independent')+vline, use_container_width=True)
+    st.altair_chart((chart1+chart2).properties(height=500).configure_axis(labelFontSize=20, titleFontSize=20).resolve_scale(color='independent')+vline, use_container_width=True)
 
     # NOTE: not sure why formatting is not working
     format_mapping = {}
