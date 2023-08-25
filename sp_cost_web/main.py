@@ -216,7 +216,7 @@ def plot_costs(df):
         labelAngle=0,
         labelFontSize=20,
         titleFontSize=20
-    )
+    ).properties(height=400)
     st.altair_chart(acounting_chart, use_container_width=True)
     
     df_copy = df.copy()
@@ -250,7 +250,10 @@ def plot_costs(df):
             ),
             order=alt.Order("variable", sort="descending")
         )
-    )
+    ).configure_axis(
+        labelFontSize=20,
+        titleFontSize=20
+    ).properties(height=600)
     chart2 = (
         alt.Chart(dff_negative).mark_bar().encode(
             x=alt.X("value:Q", title="($/TiB/Yr)"),
@@ -264,7 +267,10 @@ def plot_costs(df):
             ),
             order=alt.Order("variable", sort="descending"),
         )
-    )
+    ).configure_axis(
+        labelFontSize=20,
+        titleFontSize=20
+    ).properties(height=600)
     vline = (
         alt.Chart(pd.DataFrame({'x':[0]})).mark_rule(color='black').encode(x='x', strokeWidth=alt.value(2))
     )
