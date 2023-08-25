@@ -232,13 +232,13 @@ def main():
     forecast_length_days=365*3
     end_date = current_date + timedelta(days=forecast_length_days)
     scenario2erpt = get_offline_data(start_date, current_date, end_date)
+    compute_costs_kwargs = {
+        'scenario2erpt':scenario2erpt
+    }
 
     with st.sidebar:
         st.title('SP Cost Scenario Explorer')
-
-        compute_costs_kwargs = {
-            'scenario2erpt':scenario2erpt
-        }
+        
         st.slider(
             "FIL Exchange Rate ($/FIL)", 
             min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="filprice_slider",
@@ -270,7 +270,7 @@ def main():
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.selectbox(
-            'Onboarding Scenario', ('Pessimistic', 'Status-Quo', 'Optimistic'), key="onboarding_scenario",
+            'Onboarding Scenario', ('Pessimistic', 'Status-Quo', 'Optimistic'), value='pessimistic', key="onboarding_scenario",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
     
