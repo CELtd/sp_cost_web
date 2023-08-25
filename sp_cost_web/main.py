@@ -198,7 +198,7 @@ def plot_costs(df):
     # st.bar_chart(data=df_sorted, x='SP Type', y=['revenue', 'cost'])
     acounting_chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('SP Type', sort='-y'),
-        y=alt.Y('profit')
+        y=alt.Y('profit'),
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20'))
         # color=alt.condition(
         #     alt.datum.profit > 0,
