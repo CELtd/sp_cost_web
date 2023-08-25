@@ -118,7 +118,7 @@ def compute_costs(scenario2erpt=None):
         'staff_cost': staff_cost_tib_per_yr,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
-        'bd_cost': bd_cost_tib_per_yr,
+        'bd_cost': 0.5*deal_income_tib_per_yr,
         'extra_copy_cost': (staff_cost_tib_per_yr+bd_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': 0
     }
@@ -133,7 +133,7 @@ def compute_costs(scenario2erpt=None):
         'staff_cost': staff_cost_tib_per_yr,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
-        'bd_cost': bd_cost_tib_per_yr/10.0,
+        'bd_cost': deal_income_tib_per_yr*0.2,
         'extra_copy_cost': (staff_cost_tib_per_yr+bd_cost_tib_per_yr/10.0+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': 0
     }
@@ -319,7 +319,7 @@ def main():
             )
             st.slider(
                 'Biz Dev Cost (TiB/Yr)', 
-                min_value=5.0, max_value=50.0, value=34.0, step=1.0, format='%0.02f', key="bizdev_cost",
+                min_value=5.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="bizdev_cost",
                 on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
             )
             st.slider(
