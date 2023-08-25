@@ -207,7 +207,12 @@ def plot_costs(df):
         # )
     )
     st.altair_chart(acounting_chart, use_container_width=True)
-    st.dataframe(df.T.style.format("{:.2%}"))
+    # st.dataframe(df.T)
+    
+    dft = df.T
+    st.table(dft)
+    # Custom formatting
+    st.table(dft.style.format({"{:.2f}"}))
     
 def main():
     st.set_page_config(
