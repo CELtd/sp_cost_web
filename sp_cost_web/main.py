@@ -204,7 +204,7 @@ def main():
         }
         st.slider(
             "FIL Exchange Rate ($/FIL)", 
-            min_value=3., max_value=50., value=4, step=.1, format='%0.02f', key="filprice_slider",
+            min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="filprice_slider",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
@@ -214,32 +214,28 @@ def main():
         )
         st.slider(
             'Biz Dev Cost (TiB/Yr)', 
-            min_value=5.0, max_value=50.0, value=34.0, step=1, format='%0.02f', key="bizdev_cost",
+            min_value=5.0, max_value=50.0, value=34.0, step=1.0, format='%0.02f', key="bizdev_cost",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Deal Income ($/TiB/Yr)', 
-            min_value=0.0, max_value=50.0, value=16.0, step=1, format='%0.02f', key="deal_income",
+            min_value=0.0, max_value=50.0, value=16.0, step=1.0, format='%0.02f', key="deal_income",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Data Prep Cost ($/TiB/Yr)', 
-            min_value=0.0, max_value=50.0, value=1.0, step=1, format='%0.02f', key="data_prep_cost",
+            min_value=0.0, max_value=50.0, value=1.0, step=1.0, format='%0.02f', key="data_prep_cost",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Cheating Penalty ($/TiB/Yr)', 
-            min_value=0.0, max_value=50.0, value=0, step=1, format='%0.02f', key="cheating_penalty",
+            min_value=0.0, max_value=50.0, value=0.0, step=1.0, format='%0.02f', key="cheating_penalty",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
-
         st.selectbox(
             'Onboarding Scenario',
             ('Pessimistic', 'Status-Quo', 'Optimistic'),
         )
-
-
-
     
     if "debug_string" in st.session_state:
         st.markdown(
