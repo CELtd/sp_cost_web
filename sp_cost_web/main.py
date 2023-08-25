@@ -190,26 +190,24 @@ def compute_costs(scenario2erpt=None):
 
 def plot_costs(df):
     # sort by profit
-    df_sorted = df.sort_values(by=['profit'], ascending=False).reset_index(drop=True)
-    df_sorted['revenue'] = df_sorted['revenue'].astype(float)
-    df_sorted['cost'] = df_sorted['cost'].astype(float)
-    df_sorted['profit'] = df_sorted['profit'].astype(float)
+    # df_sorted = df.sort_values(by=['profit'], ascending=False).reset_index(drop=True)
+    # df_sorted['revenue'] = df_sorted['revenue'].astype(float)
+    # df_sorted['cost'] = df_sorted['cost'].astype(float)
+    # df_sorted['profit'] = df_sorted['profit'].astype(float)
 
     # st.bar_chart(data=df_sorted, x='SP Type', y=['revenue', 'cost'])
-    acounting_chart = alt.Chart(df_sorted).mark_bar().encode(
+    acounting_chart = alt.Chart(df).mark_bar().encode(
         x='SP Type',
-        y='profit',
+        y=alt.Y('profit').sort('-y'),
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20'))
         # color=alt.condition(
         #     alt.datum.profit > 0,
         #     alt.value("green"),  # The positive color
         #     alt.value("red")  # The negative color
         # )
-    ).properties(height=700)
+    )
     st.altair_chart(acounting_chart, use_container_width=True)
-
-
-    st.dataframe(df_sorted)
+    st.dataframe(df.T)
     
 def main():
     st.set_page_config(
