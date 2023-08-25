@@ -209,12 +209,13 @@ def plot_costs(df):
     st.altair_chart(acounting_chart, use_container_width=True)
     # st.dataframe(df.T)
     
-    dft = df
+    format_mapping = {col: ("{:.2f}" if col != 'SP Type' else "{}") for col in df.columns}
+    formatted_df = df.style.format(format_mapping)
     # st.table(dft)
     # Custom formatting
     # st.table(dft.style.format({"{:.2f}"}))
-    format_mapping = {col: ("{:.2f}" if col != 'SP Type' else "{}") for col in dft.columns}
-    st.write(dft.style.format(format_mapping).T)
+    
+    st.write(formatted_df.T)
     
 def main():
     st.set_page_config(
