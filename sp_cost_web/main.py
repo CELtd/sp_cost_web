@@ -191,9 +191,22 @@ def compute_costs(scenario2erpt=None):
 def plot_costs(df):
     # sort by profit
     df_sorted = df.sort_values(by=['profit'], ascending=False).reset_index(drop=True)
-    st.dataframe(df_sorted)
-    st.bar_chart(data=df_sorted, x='SP Type', y=['revenue', 'cost'])
+    # st.bar_chart(data=df_sorted, x='SP Type', y=['revenue', 'cost'])
+    acounting_chart = alt.Chart(df_sorted).mark_bar().encode(
+        x='SP Type',
+        y=['revenue', 'cost'],
+        color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20'))
+        # color=alt.condition(
+        #     alt.datum.profit > 0,
+        #     alt.value("green"),  # The positive color
+        #     alt.value("red")  # The negative color
+        # )
+    ).properties(height=700)
+    st.altair_chart(acounting_chart, use_container_width=True)
 
+
+    st.dataframe(df_sorted)
+    
 def main():
     st.set_page_config(
         page_title="Cost Explorer",
