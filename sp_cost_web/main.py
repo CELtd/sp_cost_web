@@ -343,7 +343,7 @@ def main():
                 on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
             )
             st.slider(
-                'FIL+', min_value=1, max_value=20, value=1, step=1, key="filp_multiplier",
+                'FIL+', min_value=1, max_value=20, value=10, step=1, key="filp_multiplier",
                 on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
             )
         
