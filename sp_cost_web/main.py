@@ -226,7 +226,7 @@ def plot_costs(df):
             color=alt.Color(
                 'variable',
                 scale=alt.Scale(
-                    scheme='goldred'
+                    scheme='greenblue'
                 ),
             ),
             order=alt.Order("variable", sort="descending"),
@@ -239,7 +239,7 @@ def plot_costs(df):
             color=alt.Color(
                 'variable',
                 scale=alt.Scale(
-                    scheme='greenblue'
+                    scheme='goldred'
                 ),
             ),
             order=alt.Order("variable", sort="descending"),
