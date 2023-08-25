@@ -207,11 +207,11 @@ def compute_costs(scenario2erpt=None):
 
 def plot_costs(df):
     acounting_chart = alt.Chart(df, title="Profit").mark_bar().encode(
-        x=alt.X('SP Type', sort='-y'),
+        x=alt.X('SP Type', sort='-y', title=""),
         y=alt.Y('profit', title="($/TiB/Yr)"),
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20')),
     ).configure_axis(
-        labelAngle=45
+        labelAngle=90
     )
     st.altair_chart(acounting_chart, use_container_width=True)
     
