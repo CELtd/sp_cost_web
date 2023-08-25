@@ -191,10 +191,10 @@ def compute_costs(scenario2erpt=None):
 def plot_costs(df):
     # sort by profit
     df_sorted = df.sort_values(by=['profit'], ascending=False).reset_index(drop=True)
-    df_sorted['revenue'] = float(df_sorted['revenue'])
-    df_sorted['cost'] = float(df_sorted['cost'])
-    df_sorted['profit'] = float(df_sorted['profit'])
-    
+    df_sorted['revenue'] = df_sorted['revenue'].astype(float)
+    df_sorted['cost'] = df_sorted['cost'].astype(float)
+    df_sorted['profit'] = df_sorted['profit'].astype(float)
+
     # st.bar_chart(data=df_sorted, x='SP Type', y=['revenue', 'cost'])
     acounting_chart = alt.Chart(df_sorted).mark_bar().encode(
         x='SP Type',
