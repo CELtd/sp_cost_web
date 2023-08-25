@@ -212,7 +212,8 @@ def plot_costs(df):
     dft = df.T
     st.table(dft)
     # Custom formatting
-    st.table(dft.style.format({"{:.2f}"}))
+    # st.table(dft.style.format({"{:.2f}"}))
+    st.write(dft.style.format("{:.2f}"))
     
 def main():
     st.set_page_config(
