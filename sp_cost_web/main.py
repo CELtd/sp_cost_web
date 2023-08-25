@@ -135,7 +135,7 @@ def compute_costs(scenario2erpt=None):
         'cheating_cost': 0
     }
     filp_cheat_miner = {
-        'SP Type':'FIL+ Cheat',
+        'SP Type':'FIL+ Exploit',
         'block_rewards': erpt*exchange_rate*filp_multiplier,
         'deal_income': 0,
         'pledge_cost': erpt*exchange_rate*filp_multiplier*borrowing_cost_pct,
