@@ -274,7 +274,7 @@ def plot_costs(df):
         if c != 'SP Type':
             format_mapping[c] = "{:.2f}"
     formatted_df = df.T.style.format(format_mapping)
-    st.markdown("### Cost Breakdown Table")
+    st.markdown("#### Cost Breakdown Table")
     st.write(formatted_df)
     
 def main():
