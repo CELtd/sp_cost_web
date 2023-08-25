@@ -214,7 +214,8 @@ def plot_costs(df):
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20')),
     ).configure_axis(
         labelAngle=0,
-        labelFontSize=20
+        labelFontSize=20,
+        titleFontSize=20
     )
     st.altair_chart(acounting_chart, use_container_width=True)
     
