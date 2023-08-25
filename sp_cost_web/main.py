@@ -205,6 +205,7 @@ def plot_costs(df):
     for c in df_copy.columns:
         if 'cost' in c:
             df_copy[c] = df_copy[c] * -1
+    df_copy = df_copy.drop(columns=['profit'])
     dff = pd.melt(df_copy, id_vars=['SP Type'])
     angelo_chart = alt.Chart(dff).mark_bar().encode(
             x=alt.X("value:Q", title=""),
