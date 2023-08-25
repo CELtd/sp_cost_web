@@ -181,10 +181,9 @@ def compute_costs(scenario2erpt=None):
     }
     df = pd.DataFrame([filp_miner, rd_miner, filp_cheat_miner, cc_miner, aws])
     # add final accounting to the DF
-    df['revenue'] = df['block_rewards'] + df['deal_income']
-    df['cost'] = df['pledge_cost'] + df['gas_cost'] + df['power_cost'] + df['bandwidth_cost'] + df['staff_cost'] + df['sealing_cost'] + df['data_prep_cost'] + df['bd_cost'] + df['extra_copy_cost'] + df['cheating_cost']
-    df['cost'] = df['cost']*-1
-    df['profit'] = df['revenue'] + df['cost']
+    revenue = df['block_rewards'] + df['deal_income']
+    cost = df['pledge_cost'] + df['gas_cost'] + df['power_cost'] + df['bandwidth_cost'] + df['staff_cost'] + df['sealing_cost'] + df['data_prep_cost'] + df['bd_cost'] + df['extra_copy_cost'] + df['cheating_cost']
+    df['profit'] = revenue-cost
 
     # st.dataframe(df.T)
     plot_costs(df)
