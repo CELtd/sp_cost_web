@@ -119,7 +119,7 @@ def compute_costs(scenario2erpt=None):
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
         'bd_cost': 0.5*deal_income_tib_per_yr,
-        'extra_copy_cost': (staff_cost_tib_per_yr+bd_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': 0
     }
     rd_miner = {
@@ -134,7 +134,7 @@ def compute_costs(scenario2erpt=None):
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
         'bd_cost': deal_income_tib_per_yr*0.2,
-        'extra_copy_cost': (staff_cost_tib_per_yr+bd_cost_tib_per_yr/10.0+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': 0
     }
     filp_exploit_miner = {
@@ -164,7 +164,7 @@ def compute_costs(scenario2erpt=None):
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': 1,
         'bd_cost': 0,
-        'extra_copy_cost': (staff_cost_tib_per_yr+bd_cost_tib_per_yr/10.0+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': penalty_tib_per_yr
     }
     cc_miner = {
