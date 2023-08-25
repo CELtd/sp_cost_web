@@ -233,8 +233,8 @@ def main():
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.selectbox(
-            'Onboarding Scenario',
-            ('Pessimistic', 'Status-Quo', 'Optimistic'),
+            'Onboarding Scenario', ('Pessimistic', 'Status-Quo', 'Optimistic'), key="onboarding_scenario",
+            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
     
     if "debug_string" in st.session_state:
