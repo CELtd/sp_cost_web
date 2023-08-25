@@ -216,7 +216,7 @@ def plot_costs(df):
         labelAngle=0,
         labelFontSize=20,
         titleFontSize=20
-    ).properties(height=400)
+    ).properties(height=300)
     st.altair_chart(acounting_chart, use_container_width=True)
     
     df_copy = df.copy()
