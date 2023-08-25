@@ -134,7 +134,7 @@ def compute_costs(scenario2erpt=None):
         'extra_copy_cost': (staff_cost_tib_per_yr+bd_cost_tib_per_yr/10.0+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': 0
     }
-    filp_cheat_miner = {
+    filp_exploit_miner = {
         'SP Type':'FIL+ Exploit',
         'block_rewards': erpt*exchange_rate*filp_multiplier,
         'deal_income': 0,
@@ -147,6 +147,21 @@ def compute_costs(scenario2erpt=None):
         'data_prep_cost': 1,
         'bd_cost': 0,
         'extra_copy_cost': 0,
+        'cheating_cost': penalty_tib_per_yr
+    }
+    filp_cheat_miner = {
+        'SP Type':'FIL+ Cheat',
+        'block_rewards': erpt*exchange_rate*filp_multiplier,
+        'deal_income': 0,
+        'pledge_cost': erpt*exchange_rate*filp_multiplier*borrowing_cost_pct,
+        'gas_cost': gas_cost_tib_per_yr,
+        'power_cost': power_cost_tib_per_yr,
+        'bandwidth_cost': bandwidth_10gbps_tib_per_yr,
+        'staff_cost': staff_cost_tib_per_yr,
+        'sealing_cost': sealing_costs_tib_per_yr,
+        'data_prep_cost': 1,
+        'bd_cost': 0,
+        'extra_copy_cost': (staff_cost_tib_per_yr+bd_cost_tib_per_yr/10.0+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': penalty_tib_per_yr
     }
     cc_miner = {
@@ -165,7 +180,7 @@ def compute_costs(scenario2erpt=None):
         'cheating_cost': 0
     }
     aws = {
-        'SP Type':'AWS',
+        'SP Type':'AWS Reference',
         'block_rewards': 0,
         'deal_income': 6.6,
         'pledge_cost': 0,
@@ -179,7 +194,7 @@ def compute_costs(scenario2erpt=None):
         'extra_copy_cost': 0,
         'cheating_cost': 0
     }
-    df = pd.DataFrame([filp_miner, rd_miner, filp_cheat_miner, cc_miner, aws])
+    df = pd.DataFrame([filp_miner, rd_miner, filp_exploit_miner, filp_cheat_miner, cc_miner, aws])
     # add final accounting to the DF
     revenue = df['block_rewards'] + df['deal_income']
     cost = df['pledge_cost'] + df['gas_cost'] + df['power_cost'] + df['bandwidth_cost'] + df['staff_cost'] + df['sealing_cost'] + df['data_prep_cost'] + df['bd_cost'] + df['extra_copy_cost'] + df['cheating_cost']
@@ -228,8 +243,10 @@ def plot_costs(df):
                 scale=alt.Scale(
                     scheme='greenblue'
                 ),
+                legend=alt.Legend(title='Revenue')
             ),
             order=alt.Order("variable", sort="descending"),
+            
         )
     )
     chart2 = (
@@ -241,6 +258,7 @@ def plot_costs(df):
                 scale=alt.Scale(
                     scheme='goldred'
                 ),
+                legend=alt.Legend(title='Costs')
             ),
             order=alt.Order("variable", sort="descending"),
         )
