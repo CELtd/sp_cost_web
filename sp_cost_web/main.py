@@ -213,11 +213,11 @@ def plot_costs(df):
     for c in df.columns:
         if c != 'SP Type':
             format_mapping[c] = "{:.2f}"
-    formatted_df = df.T.style.format(format_mapping)
+    # formatted_df = df.T.style.format(format_mapping)
     # st.table(dft)
     # Custom formatting
     # st.table(dft.style.format({"{:.2f}"}))
-    st.write(formatted_df)
+    st.write(df.T.style.format(format_mapping))
     
 def main():
     st.set_page_config(
