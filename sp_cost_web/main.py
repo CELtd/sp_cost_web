@@ -215,7 +215,7 @@ def plot_costs(df):
     ).configure_axis(
         labelAngle=0
     )
-    st.altair_chart(acounting_chart, use_container_width=True)
+    st.altair_chart(acounting_chart, use_container_width=True).configure_text(fontSize=20)
     
     df_copy = df.copy()
     for c in df_copy.columns:
