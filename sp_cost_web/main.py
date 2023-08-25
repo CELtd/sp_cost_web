@@ -182,7 +182,8 @@ def compute_costs(scenario2erpt=None):
     # add final accounting to the DF
     df['revenue'] = df['block_rewards'] + df['deal_income']
     df['cost'] = df['pledge_cost'] + df['gas_cost'] + df['power_cost'] + df['bandwidth_cost'] + df['staff_cost'] + df['sealing_cost'] + df['data_prep_cost'] + df['bd_cost'] + df['extra_copy_cost'] + df['cheating_cost']
-    df['profit'] = df['revenue'] - df['cost']
+    df['cost'] = df['cost']*-1
+    df['profit'] = df['revenue'] + df['cost']
 
     # st.dataframe(df.T)
     plot_costs(df)
@@ -191,7 +192,7 @@ def plot_costs(df):
     # sort by profit
     df_sorted = df.sort_values(by=['profit'], ascending=False).reset_index(drop=True)
     st.dataframe(df_sorted)
-    st.bar_chart(data=df_sorted, x='SP Type', y=['profit'])
+    st.bar_chart(data=df_sorted, x='SP Type', y=['revenue', 'cost'])
 
 def main():
     st.set_page_config(
