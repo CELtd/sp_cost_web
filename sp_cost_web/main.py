@@ -250,10 +250,7 @@ def plot_costs(df):
             ),
             order=alt.Order("variable", sort="descending")
         )
-    ).configure_axis(
-        labelFontSize=20,
-        titleFontSize=20
-    ).properties(height=600)
+    )
     chart2 = (
         alt.Chart(dff_negative).mark_bar().encode(
             x=alt.X("value:Q", title="($/TiB/Yr)"),
@@ -267,14 +264,11 @@ def plot_costs(df):
             ),
             order=alt.Order("variable", sort="descending"),
         )
-    ).configure_axis(
-        labelFontSize=20,
-        titleFontSize=20
-    ).properties(height=600)
+    )
     vline = (
         alt.Chart(pd.DataFrame({'x':[0]})).mark_rule(color='black').encode(x='x', strokeWidth=alt.value(2))
     )
-    st.altair_chart((chart1+chart2).resolve_scale(color='independent')+vline, use_container_width=True)
+    st.altair_chart((chart1+chart2).configure_axis(labelFontSize=20, titleFontSize=20).resolve_scale(color='independent')+vline, use_container_width=True)
 
     # NOTE: not sure why formatting is not working
     format_mapping = {}
