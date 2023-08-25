@@ -70,7 +70,7 @@ def get_offline_data(start_date, current_date, end_date):
             offline_data
         )
         # scenario2results[scenario] = simulation_results
-        expected_rewards_per_sector_today = simulation_results['1y_return_per_sector']
+        expected_rewards_per_sector_today = float(simulation_results['1y_return_per_sector'][0])
     
         # extract the block-rewards per tib for each scenario
         sectors_per_tib = (1024**4) / C.SECTOR_SIZE
