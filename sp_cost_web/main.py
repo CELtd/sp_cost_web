@@ -210,9 +210,10 @@ def plot_costs(df):
         x=alt.X('SP Type', sort='-y'),
         y=alt.Y('profit', title="($/TiB/Yr)"),
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20')),
-        title="Profit"
     ).configure_axis(
         labelAngle=45
+    ).configure_title(
+        text="Profit"
     )
     st.altair_chart(acounting_chart, use_container_width=True)
     
@@ -245,9 +246,10 @@ def plot_costs(df):
                 ),
                 legend=alt.Legend(title='Revenue')
             ),
-            order=alt.Order("variable", sort="descending"),
-            title="Cost Breakdown"   
+            order=alt.Order("variable", sort="descending")
         )
+    ).configure_title(
+        text="Revenue"
     )
     chart2 = (
         alt.Chart(dff_negative).mark_bar().encode(
