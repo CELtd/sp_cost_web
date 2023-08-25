@@ -179,6 +179,11 @@ def compute_costs(scenario2erpt=None):
         'cheating_cost': 0
     }
     df = pd.DataFrame([filp_miner, rd_miner, filp_cheat_miner, cc_miner, aws])
+    # add final accounting to the DF
+    df['revenue'] = df['block_rewards'] + df['deal_income']
+    df['cost'] = df['pledge_cost'] + df['gas_cost'] + df['power_cost'] + df['bandwidth_cost'] + df['staff_cost'] + df['sealing_cost'] + df['data_prep_cost'] + df['bd_cost'] + df['extra_copy_cost'] + df['cheating_cost']
+    df['profit'] = df['revenue'] - df['cost']
+
     st.dataframe(df.T)
 
 
