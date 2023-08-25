@@ -86,7 +86,7 @@ def compute_costs(scenario2erpt=None):
     erpt = scenario2erpt[onboarding_scenario]
     
     exchange_rate =  st.session_state['filprice_slider']
-    borrowing_cost_pct = st.session_state['borrow_cost_pct']
+    borrowing_cost_pct = st.session_state['borrow_cost_pct'] / 100.0
     bd_cost_tib_per_yr = st.session_state['bizdev_cost']
     deal_income_tib_per_yr = st.session_state['deal_income']
     data_prep_cost_tib_per_yr = st.session_state['data_prep_cost']
@@ -207,7 +207,7 @@ def plot_costs(df):
         # )
     )
     st.altair_chart(acounting_chart, use_container_width=True)
-    st.dataframe(df.T)
+    st.dataframe(df.T.style.format("{:.2%}"))
     
 def main():
     st.set_page_config(
@@ -236,7 +236,7 @@ def main():
         )
         st.slider(
             'Borrowing Costs (Pct. of Pledge)', 
-            min_value=0.0, max_value=1.0, value=0.5, step=0.01, format='%0.02f', key="borrow_cost_pct",
+            min_value=0.0, max_value=100.0, value=50.0, step=1.00, format='%0.02f', key="borrow_cost_pct",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
