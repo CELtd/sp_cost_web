@@ -268,7 +268,7 @@ def main():
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
     
-    compute_costs(compute_costs_kwargs)
+    compute_costs(**compute_costs_kwargs)
     if "debug_string" in st.session_state:
         st.markdown(
             f'<div class="debug">{ st.session_state["debug_string"]}</div>',
