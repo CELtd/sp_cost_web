@@ -208,13 +208,11 @@ def compute_costs(scenario2erpt=None):
 def plot_costs(df):
     acounting_chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('SP Type', sort='-y'),
-        y=alt.Y('profit'),
-        color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20'))
-        # color=alt.condition(
-        #     alt.datum.profit > 0,
-        #     alt.value("green"),  # The positive color
-        #     alt.value("red")  # The negative color
-        # )
+        y=alt.Y('profit', title="($/TiB/Yr)"),
+        color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20')),
+        title="Profit"
+    ).configure_axis(
+        labelAngle=45
     )
     st.altair_chart(acounting_chart, use_container_width=True)
     
@@ -238,7 +236,7 @@ def plot_costs(df):
     #     )
     chart1 = (
     alt.Chart(dff_positive).mark_bar().encode(
-            x=alt.X("value:Q", title=""),
+            x=alt.X("value:Q", title="($/TiB/Yr)"),
             y=alt.Y("SP Type:N", title=""),
             color=alt.Color(
                 'variable',
@@ -248,12 +246,12 @@ def plot_costs(df):
                 legend=alt.Legend(title='Revenue')
             ),
             order=alt.Order("variable", sort="descending"),
-            
+            title="Cost Breakdown"   
         )
     )
     chart2 = (
         alt.Chart(dff_negative).mark_bar().encode(
-            x=alt.X("value:Q", title=""),
+            x=alt.X("value:Q", title="($/TiB/Yr)"),
             y=alt.Y("SP Type:N", title=""),
             color=alt.Color(
                 'variable',
@@ -303,7 +301,7 @@ def main():
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.selectbox(
-            'Onboarding Scenario', ('Pessimistic', 'Status-Quo', 'Optimistic'), key="onboarding_scenario",
+            'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="onboarding_scenario",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )                
         with st.expander("Revenue Settings", expanded=False):
