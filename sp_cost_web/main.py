@@ -184,8 +184,13 @@ def compute_costs(scenario2erpt=None):
     df['cost'] = df['pledge_cost'] + df['gas_cost'] + df['power_cost'] + df['bandwidth_cost'] + df['staff_cost'] + df['sealing_cost'] + df['data_prep_cost'] + df['bd_cost'] + df['extra_copy_cost'] + df['cheating_cost']
     df['profit'] = df['revenue'] - df['cost']
 
-    st.dataframe(df.T)
+    # st.dataframe(df.T)
+    plot_costs(df)
 
+def plot_costs(df):
+    # sort by profit
+    df_sorted = df.sort_values(by=['profit'], ascending=False)
+    st.bar_chart(data=df, x='SP Type', y=['revenue', 'cost', 'profit'])
 
 def main():
     st.set_page_config(
@@ -202,7 +207,7 @@ def main():
     scenario2erpt = get_offline_data(start_date, current_date, end_date)
 
     with st.sidebar:
-        st.title('Filecoin Economics Explorer')
+        st.title('SP Cost Scenario Explorer')
 
         compute_costs_kwargs = {
             'scenario2erpt':scenario2erpt
