@@ -295,45 +295,44 @@ def main():
 
     with st.sidebar:
         st.title('SP Cost Scenario Explorer')
-        with st.beta_container():
-            col1, col2 = st.beta_columns(2)
-            with col1:
-                st.slider(
-                    "FIL Exchange Rate ($/FIL)", 
-                    min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="filprice_slider",
-                    on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
-                )
-                st.slider(
-                    'Deal Income ($/TiB/Yr)', 
-                    min_value=0.0, max_value=50.0, value=16.0, step=1.0, format='%0.02f', key="deal_income",
-                    on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
-                )
-                st.selectbox(
-                    'Onboarding Scenario', ('Pessimistic', 'Status-Quo', 'Optimistic'), key="onboarding_scenario",
-                    on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
-                )
+        with st.expander("Settings", expanded=True):
+            st.slider(
+                "FIL Exchange Rate ($/FIL)", 
+                min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="filprice_slider",
+                on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            )
+            st.slider(
+                'Deal Income ($/TiB/Yr)', 
+                min_value=0.0, max_value=50.0, value=16.0, step=1.0, format='%0.02f', key="deal_income",
+                on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            )
+            st.selectbox(
+                'Onboarding Scenario', ('Pessimistic', 'Status-Quo', 'Optimistic'), key="onboarding_scenario",
+                on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            )
                 
-            with col2:
-                st.slider(
-                    'Borrowing Costs (Pct. of Pledge)', 
-                    min_value=0.0, max_value=100.0, value=50.0, step=1.00, format='%0.02f', key="borrow_cost_pct",
-                    on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
-                )
-                st.slider(
-                    'Biz Dev Cost (TiB/Yr)', 
-                    min_value=5.0, max_value=50.0, value=34.0, step=1.0, format='%0.02f', key="bizdev_cost",
-                    on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
-                )
-                st.slider(
-                    'Data Prep Cost ($/TiB/Yr)', 
-                    min_value=0.0, max_value=50.0, value=1.0, step=1.0, format='%0.02f', key="data_prep_cost",
-                    on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
-                )
-                st.slider(
-                    'Cheating Penalty ($/TiB/Yr)', 
-                    min_value=0.0, max_value=50.0, value=0.0, step=1.0, format='%0.02f', key="cheating_penalty",
-                    on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
-                )
+
+        with st.expander("Costs", expanded=False):
+            st.slider(
+                'Borrowing Costs (Pct. of Pledge)', 
+                min_value=0.0, max_value=100.0, value=50.0, step=1.00, format='%0.02f', key="borrow_cost_pct",
+                on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            )
+            st.slider(
+                'Biz Dev Cost (TiB/Yr)', 
+                min_value=5.0, max_value=50.0, value=34.0, step=1.0, format='%0.02f', key="bizdev_cost",
+                on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            )
+            st.slider(
+                'Data Prep Cost ($/TiB/Yr)', 
+                min_value=0.0, max_value=50.0, value=1.0, step=1.0, format='%0.02f', key="data_prep_cost",
+                on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            )
+            st.slider(
+                'Cheating Penalty ($/TiB/Yr)', 
+                min_value=0.0, max_value=50.0, value=0.0, step=1.0, format='%0.02f', key="cheating_penalty",
+                on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            )
         
         st.button("Compute!", on_click=compute_costs, kwargs=compute_costs_kwargs, key="forecast_button")
     
