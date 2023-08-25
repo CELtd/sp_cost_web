@@ -202,15 +202,21 @@ def plot_costs(df):
     )
     st.altair_chart(acounting_chart, use_container_width=True)
     
+    dff = pd.melt(df, id_vars=['SP Type'])
+    angelo_chart = alt.Chart(dff).mark_bar().encode(
+            x=alt.X("value:Q", title=""),
+            y=alt.Y("SP Type:N", title=""),
+            color=alt.Color("variable", type="nominal", title=""),
+            order=alt.Order("variable", sort="descending"),
+        )
+    st.altair_chart(angelo_chart, use_container_width=True)
+
     # NOTE: not sure why formatting is not working
     format_mapping = {}
     for c in df.columns:
         if c != 'SP Type':
             format_mapping[c] = "{:.2f}"
     formatted_df = df.T.style.format(format_mapping)
-    # st.table(dft)
-    # Custom formatting
-    # st.table(dft.style.format({"{:.2f}"}))
     st.write(formatted_df)
     
 def main():
