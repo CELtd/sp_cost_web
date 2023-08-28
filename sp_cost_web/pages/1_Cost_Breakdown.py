@@ -55,7 +55,7 @@ def compute_costs(scenario2erpt=None):
         filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
         deal_income_tib_per_yr=deal_income_tib_per_yr,
         data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
-        power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+        power_cost_tib_per_yr=power_cost_tib_per_yr, bandwidth_10gbps_tib_per_yr=bw_cost_tib_per_yr,
         staff_cost_tib_per_yr=staff_cost_tib_per_yr
     )
     plot_costs(df)

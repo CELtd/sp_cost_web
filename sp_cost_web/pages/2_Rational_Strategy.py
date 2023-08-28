@@ -105,7 +105,7 @@ def generate_rankings(scenario2erpt=None):
             filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
             deal_income_tib_per_yr=deal_income_tib_per_yr,
             data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
-            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bandwidth_10gbps_tib_per_yr=bw_cost_tib_per_yr,
             staff_cost_tib_per_yr=staff_cost_tib_per_yr
         )
         df['borrowing_cost_pct'] = borrowing_cost_sweep_pct
@@ -125,7 +125,7 @@ def generate_rankings(scenario2erpt=None):
             filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
             deal_income_tib_per_yr=deal_income_sweep,
             data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
-            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bandwidth_10gbps_tib_per_yr=bw_cost_tib_per_yr,
             staff_cost_tib_per_yr=staff_cost_tib_per_yr
         )
         df['deal_income'] = deal_income_sweep
@@ -145,7 +145,7 @@ def generate_rankings(scenario2erpt=None):
             filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
             deal_income_tib_per_yr=deal_income_tib_per_yr,
             data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr,
-            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bandwidth_10gbps_tib_per_yr=bw_cost_tib_per_yr,
             staff_cost_tib_per_yr=staff_cost_tib_per_yr
         )
         df['data_prepcost'] = data_prepcost_sweep
@@ -168,7 +168,7 @@ def generate_rankings(scenario2erpt=None):
             filp_bd_cost_tib_per_yr=filp_bizdev_cost, rd_bd_cost_tib_per_yr=rd_bizdev_cost,
             deal_income_tib_per_yr=deal_income_tib_per_yr,
             data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
-            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bandwidth_10gbps_tib_per_yr=bw_cost_tib_per_yr,
             staff_cost_tib_per_yr=staff_cost_tib_per_yr
         )
         df['bizdev_cost'] = bizdev_cost
