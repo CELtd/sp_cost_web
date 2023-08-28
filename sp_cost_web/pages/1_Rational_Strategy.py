@@ -93,6 +93,12 @@ with st.sidebar:
         'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="rs_onboarding_scenario",
         on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
     )
+    with st.expander("Revenue Settings", expanded=False):
+        st.slider(
+            'Deal Income ($/TiB/Yr)', 
+            min_value=0.0, max_value=100.0, value=16.0, step=1.0, format='%0.02f', key="rs_deal_income",
+            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+        )
     with st.expander("Cost Settings", expanded=False):
         st.slider(
             'Borrowing Costs (Pct. of Pledge)', 
