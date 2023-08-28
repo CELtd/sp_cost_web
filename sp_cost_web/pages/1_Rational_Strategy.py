@@ -49,7 +49,7 @@ def generate_rankings(scenario2erpt=None):
 
     # sweep borrowing_cost, fix other costs
     borrowing_cost_vec = np.linspace(0,100,25)
-    borrowing_cost_plot_vec = {}
+    borrowing_cost_plot_vec = []
     for borrowing_cost_sweep_pct in borrowing_cost_vec:
         borrowing_cost_sweep_frac = borrowing_cost_sweep_pct/100.0
         df = utils.compute_costs(scenario2erpt=scenario2erpt,
