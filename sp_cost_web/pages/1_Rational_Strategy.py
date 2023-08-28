@@ -28,7 +28,7 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
                 alt.Tooltip('profit', title='Profit'),
-                alt.Tooltip('borrowing_cost_pct', title='Borrowing Cost Pct', format='.2f'),
+                alt.Tooltip('borrowing_cost_pct', title='Borrowing Cost [\% of Block Rewards]', format='.2f'),
             ]
         )
         st.altair_chart(borrowing_cost_chart, use_container_width=True)
@@ -114,7 +114,7 @@ def generate_rankings(scenario2erpt=None):
                                 onboarding_scenario=onboarding_scenario,
                                 exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
                                 filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
-                                deal_income_tib_per_yr=deal_income_tib_per_yr,
+                                deal_income_tib_per_yr=deal_income_sweep,
                                 data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
         df['deal_income'] = deal_income_sweep
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
@@ -193,13 +193,13 @@ with st.sidebar:
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'FIL+ Biz Dev Cost (TiB/Yr)', 
-            min_value=5.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="rs_filp_bizdev_cost",
+            'FIL+ Biz Dev Cost ($/TiB/Yr)', 
+            min_value=1.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="rs_filp_bizdev_cost",
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'RD Biz Dev Cost (TiB/Yr)', 
-            min_value=5.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="rs_rd_bizdev_cost",
+            'RD Biz Dev Cost ($/TiB/Yr)', 
+            min_value=1.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="rs_rd_bizdev_cost",
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
