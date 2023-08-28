@@ -66,21 +66,14 @@ def get_offline_data(start_date, current_date, end_date):
     
     return scenario2erpt
 
-def compute_costs(scenario2erpt=None):
-    filp_multiplier = st.session_state['filp_multiplier']
-    rd_multiplier = st.session_state['rd_multiplier']
-    cc_multiplier = st.session_state['cc_multiplier']
-
-    onboarding_scenario = st.session_state['onboarding_scenario'].lower()
-    # print(scenario2erpt.keys())
+def compute_costs(scenario2erpt=None, 
+                  filp_multiplier=10, rd_multiplier=1, cc_multiplier=1,
+                  onboarding_scenario='status-quo',
+                  exchange_rate=4.0, borrowing_cost_pct=50,
+                  bd_cost_tib_per_yr=8.0, deal_income_tib_per_yr=16.0,
+                  data_prep_cost_tib_per_yr=1.0, penalty_tib_per_yr=0.0
+                  ):
     erpt = scenario2erpt[onboarding_scenario]
-    
-    exchange_rate =  st.session_state['filprice_slider']
-    borrowing_cost_pct = st.session_state['borrow_cost_pct'] / 100.0
-    bd_cost_tib_per_yr = st.session_state['bizdev_cost']
-    deal_income_tib_per_yr = st.session_state['deal_income']
-    data_prep_cost_tib_per_yr = st.session_state['data_prep_cost']
-    penalty_tib_per_yr = st.session_state['cheating_penalty']
     
     # Definitions (we can make these configurable later, potentially)
     sealing_costs_tib_per_yr = 1.3
