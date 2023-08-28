@@ -1,8 +1,4 @@
 import streamlit as st
 
-
-def main():
-    st.write("# Rational Strategy :brain:")
-
-if __name__ == '__main__':
-    main()
+st.set_page_config(page_title="Rational Strategy", page_icon=":brain:")
+st.write("# Rational Strategy :brain:")
