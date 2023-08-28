@@ -53,7 +53,7 @@ def compute_costs(scenario2erpt=None):
     plot_costs(df)
 
 def plot_costs(df):
-    acounting_chart = alt.Chart(df, title="Profit").mark_bar().encode(
+    acounting_chart = alt.Chart(df, title="Net Income").mark_bar().encode(
         x=alt.X('SP Type', sort='-y', title=""),
         y=alt.Y('profit', title="($/TiB/Yr)"),
         color=alt.Color('SP Type', scale=alt.Scale(scheme='tableau20')),

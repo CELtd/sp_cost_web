@@ -23,7 +23,7 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
     with col1:
         borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_line().encode(
             x=alt.X('borrowing_cost_pct:Q').title('Borrowing Cost Pct [%]'),
-            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
+            y=alt.Y('profit:Q').title("Net Income [$/TiB/Yr]"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
@@ -35,7 +35,7 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
 
         data_prepcost_chart = alt.Chart(data_prepcost_plot_df, title="Data-Prep Cost").mark_line().encode(
             x=alt.X('data_prepcost:Q').title('Data-Prep Cost [$/TiB/Yr]'),
-            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
+            y=alt.Y('profit:Q').title("Net Income [$/TiB/Yr]"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
@@ -48,7 +48,7 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
     with col2:
         deal_income_chart = alt.Chart(deal_income_plot_df, title="Deal Income").mark_line().encode(
             x=alt.X('deal_income:Q').title('Deal Income [$/TiB/Yr]'),
-            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
+            y=alt.Y('profit:Q').title("Net Income [$/TiB/Yr]"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
@@ -60,7 +60,7 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
 
         bizdev_cost_chart = alt.Chart(bizdev_cost_plot_df, title="BizDev Cost [Assumption: FIL+=2x RD Cost]").mark_line().encode(
             x=alt.X('bizdev_cost:Q').title('BizDev Cost [$/TiB/Yr]'),
-            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
+            y=alt.Y('profit:Q').title("Net Income [$/TiB/Yr]"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
