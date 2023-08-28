@@ -31,8 +31,8 @@ def generate_plots(borrowing_cost_df):
         #     ]
         # )
         borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_line().encode(
-            x=alt.X('borrowing_cost:Q').title('Borrowing Cost Pct'),
-            y=alt.Y('profit:Q').title("$/TiB/Yr"),
+            x=alt.X('borrowing_cost').title('Borrowing Cost Pct'),
+            y=alt.Y('profit').title("$/TiB/Yr"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
@@ -58,7 +58,7 @@ def generate_rankings(scenario2erpt=None):
     penalty_tib_per_yr = st.session_state['rs_cheating_penalty']
 
     # sweep borrowing_cost, fix other costs
-    borrowing_cost_vec = np.linspace(0,100,25)
+    borrowing_cost_vec = np.linspace(0,100,50)
     borrowing_cost_plot_vec = []
     for borrowing_cost_sweep_pct in borrowing_cost_vec:
         borrowing_cost_sweep_frac = borrowing_cost_sweep_pct/100.0
