@@ -1,22 +1,37 @@
 import streamlit as st
 import altair as alt
 
+from collections import OrderedDict
+
 from datetime import date, timedelta
 import numpy as np
 import pandas as pd
 
 import utils  # streamlit runs from root directory, so we can import utils directly
 
-st.set_page_config(page_title="Rational Strategy", page_icon=":brain:")
+st.set_page_config(
+    page_title="Rational Strategy", 
+    page_icon=":brain:",
+    layout="wide",
+)
 
 def generate_plots(borrowing_cost_df):
     col1, col2 = st.columns(2)
 
+    sort_order = OrderedDict(
+        [
+            ('FIL+', 2), 
+            ('FIL+ Cheat', 3), 
+            ('FIL+ Exploit', 1),
+            ('Regular Deal', 4),
+            ('CC', 5),
+        ]
+    )
     with col1:
         borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_rect().encode(
             alt.X("borrowing_cost_pct:N").title("Borrowing Cost Pct").axis(labelAngle=0),  # why does format=%0.02f in axis(...) not work?
-            alt.Y("SP Type:O").title("Strategy"),
-            alt.Color("rank:N").title(None),
+            alt.Y("SP Type:O", sort=alt.EncodingSortField(field='SP Type', order=sort_order)).title("Strategy"),
+            alt.Color("rank:N").title("Ranking").scale(scheme='lighttealblue', reverse=True),
             tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
                 alt.Tooltip('rank', title='Rank')
@@ -39,14 +54,6 @@ def generate_rankings(scenario2erpt=None):
     data_prep_cost_tib_per_yr = st.session_state['rs_data_prep_cost']
     penalty_tib_per_yr = st.session_state['rs_cheating_penalty']
 
-    sp_profile_to_integer = {
-        'FIL+ Exploit': 0,
-        'FIL+': 1,
-        'FIL+ Cheat': 2,
-        'CC': 3,
-        'Regular Deal': 4,
-    }
-
     # sweep borrowing_cost, fix other costs
     borrowing_cost_vec = np.linspace(0,100,25)
     borrowing_cost_plot_vec = []
@@ -58,9 +65,8 @@ def generate_rankings(scenario2erpt=None):
                                 exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_sweep_frac,
                                 bd_cost_tib_per_yr=bd_cost_tib_per_yr, deal_income_tib_per_yr=deal_income_tib_per_yr,
                                 data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
-        df.sort_values(by='profit', ascending=False, inplace=True)
-        df['rank'] = df['SP Type'].apply(lambda x: sp_profile_to_integer[x])
         df['borrowing_cost_pct'] = borrowing_cost_sweep_pct
+        df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         borrowing_cost_plot_vec.append(df[['SP Type', 'rank', 'borrowing_cost_pct', 'profit']])
     borrowing_cost_plot_df = pd.concat(borrowing_cost_plot_vec)
 
