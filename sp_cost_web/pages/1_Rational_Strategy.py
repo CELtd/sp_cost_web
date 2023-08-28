@@ -20,14 +20,24 @@ def generate_plots(borrowing_cost_df):
 
     sort_order = ['FIL+ Exploit', 'FIL+', 'FIL+ Cheat', 'Regular Deal', 'CC']
     with col1:
-        borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_rect().encode(
-            alt.X("borrowing_cost_pct:N").title("Borrowing Cost Pct").axis(labelAngle=0),  # why does format=%0.02f in axis(...) not work?
-            alt.Y("SP Type:O", sort=sort_order).title("Strategy"),
-            alt.Color("rank:N").title("Ranking").scale(scheme='lightmulti', reverse=True),
-            tooltip=[
+        # borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_rect().encode(
+        #     alt.X("borrowing_cost_pct:N").title("Borrowing Cost Pct").axis(labelAngle=0, format='.2f'),  # why does format=%0.02f in axis(...) not work?
+        #     alt.Y("SP Type:O", sort=sort_order).title("Strategy"),
+        #     alt.Color("rank:N").title("Ranking").scale(scheme='lightmulti', reverse=True),
+        #     tooltip=[
+        #         alt.Tooltip('SP Type', title='Strategy'),
+        #         alt.Tooltip('rank', title='Rank'),
+        #         alt.Tooltip('borrowing_cost_pct', title='Borrowing Cost Pct', format='.2f'),
+        #     ]
+        # )
+        borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_line().encode(
+            x=alt.X('borrowing_cost:Q').title('Borrowing Cost Pct'),
+            y=alt.Y('profit:Q').title("$/TiB/Yr"),
+            color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
+                tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
-                alt.Tooltip('rank', title='Rank'),
-                alt.Tooltip('borrowing_cost_pct', title='Borrowing Cost Pct'),
+                alt.Tooltip('profit', title='Profit'),
+                alt.Tooltip('borrowing_cost_pct', title='Borrowing Cost Pct', format='.2f'),
             ]
         )
         st.altair_chart(borrowing_cost_chart, use_container_width=True)
