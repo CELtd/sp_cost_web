@@ -88,18 +88,26 @@ def generate_rankings(scenario2erpt=None):
     data_prep_cost_tib_per_yr = st.session_state['rs_data_prep_cost']
     penalty_tib_per_yr = st.session_state['rs_cheating_penalty']
 
+    power_cost_tib_per_yr = st.session_state['rs_power_cost']
+    bw_cost_tib_per_yr = st.session_state['rs_bw_cost']
+    staff_cost_tib_per_yr = st.session_state['rs_staff_cost']
+
     # sweep borrowing_cost, fix other costs
     borrowing_cost_vec = np.linspace(0,100,25)
     borrowing_cost_plot_vec = []
     for borrowing_cost_sweep_pct in borrowing_cost_vec:
         borrowing_cost_sweep_frac = borrowing_cost_sweep_pct/100.0
-        df = utils.compute_costs(scenario2erpt=scenario2erpt,
-                                filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
-                                onboarding_scenario=onboarding_scenario,
-                                exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_sweep_frac,
-                                filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
-                                deal_income_tib_per_yr=deal_income_tib_per_yr,
-                                data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
+        df = utils.compute_costs(
+            scenario2erpt=scenario2erpt,
+            filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+            onboarding_scenario=onboarding_scenario,
+            exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_sweep_frac,
+            filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+            deal_income_tib_per_yr=deal_income_tib_per_yr,
+            data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            staff_cost_tib_per_yr=staff_cost_tib_per_yr
+        )
         df['borrowing_cost_pct'] = borrowing_cost_sweep_pct
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         borrowing_cost_plot_vec.append(df[['SP Type', 'rank', 'borrowing_cost_pct', 'profit']])
@@ -109,13 +117,17 @@ def generate_rankings(scenario2erpt=None):
     deal_income_vec = np.linspace(0,100,25)
     deal_income_plot_vec = []
     for deal_income_sweep in deal_income_vec:
-        df = utils.compute_costs(scenario2erpt=scenario2erpt,
-                                filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
-                                onboarding_scenario=onboarding_scenario,
-                                exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
-                                filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
-                                deal_income_tib_per_yr=deal_income_sweep,
-                                data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
+        df = utils.compute_costs(
+            scenario2erpt=scenario2erpt,
+            filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+            onboarding_scenario=onboarding_scenario,
+            exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
+            filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+            deal_income_tib_per_yr=deal_income_sweep,
+            data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            staff_cost_tib_per_yr=staff_cost_tib_per_yr
+        )
         df['deal_income'] = deal_income_sweep
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         deal_income_plot_vec.append(df[['SP Type', 'rank', 'deal_income', 'profit']])
@@ -125,13 +137,17 @@ def generate_rankings(scenario2erpt=None):
     data_prepcost_vec = np.linspace(0,100,25)
     data_prepcost_plot_vec = []
     for data_prepcost_sweep in data_prepcost_vec:
-        df = utils.compute_costs(scenario2erpt=scenario2erpt,
-                                filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
-                                onboarding_scenario=onboarding_scenario,
-                                exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
-                                filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
-                                deal_income_tib_per_yr=deal_income_tib_per_yr,
-                                data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr)
+        df = utils.compute_costs(
+            scenario2erpt=scenario2erpt,
+            filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+            onboarding_scenario=onboarding_scenario,
+            exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
+            filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+            deal_income_tib_per_yr=deal_income_tib_per_yr,
+            data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            staff_cost_tib_per_yr=staff_cost_tib_per_yr
+        )
         df['data_prepcost'] = data_prepcost_sweep
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         data_prepcost_plot_vec.append(df[['SP Type', 'rank', 'data_prepcost', 'profit']])
@@ -144,13 +160,17 @@ def generate_rankings(scenario2erpt=None):
     for bizdev_cost in bizdev_cost_vec:
         filp_bizdev_cost = bizdev_cost
         rd_bizdev_cost = bizdev_cost * 0.5
-        df = utils.compute_costs(scenario2erpt=scenario2erpt,
-                                filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
-                                onboarding_scenario=onboarding_scenario,
-                                exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
-                                filp_bd_cost_tib_per_yr=filp_bizdev_cost, rd_bd_cost_tib_per_yr=rd_bizdev_cost,
-                                deal_income_tib_per_yr=deal_income_tib_per_yr,
-                                data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
+        df = utils.compute_costs(
+            scenario2erpt=scenario2erpt,
+            filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+            onboarding_scenario=onboarding_scenario,
+            exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
+            filp_bd_cost_tib_per_yr=filp_bizdev_cost, rd_bd_cost_tib_per_yr=rd_bizdev_cost,
+            deal_income_tib_per_yr=deal_income_tib_per_yr,
+            data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
+            power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+            staff_cost_tib_per_yr=staff_cost_tib_per_yr
+        )
         df['bizdev_cost'] = bizdev_cost
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         bizdev_cost_plot_vec.append(df[['SP Type', 'rank', 'bizdev_cost', 'profit']])
@@ -209,6 +229,21 @@ with st.sidebar:
         st.slider(
             'Cheating Penalty ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=0.0, step=1.0, format='%0.02f', key="rs_cheating_penalty",
+            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Power+COLO Cost ($/TiB/Yr)', 
+            min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="rs_power_cost",
+            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Bandwidth [10GBPS] Cost ($/TiB/Yr)', 
+            min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="rs_bw_cost",
+            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Staff Cost ($/TiB/Yr)', 
+            min_value=0.0, max_value=10.0, value=6.0, step=1.0, format='%0.02f', key="rs_staff_cost",
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
     with st.expander("Multipliers", expanded=False):

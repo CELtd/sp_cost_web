@@ -43,13 +43,21 @@ def compute_costs(scenario2erpt=None):
     data_prep_cost_tib_per_yr = st.session_state['data_prep_cost']
     penalty_tib_per_yr = st.session_state['cheating_penalty']
 
-    df = utils.compute_costs(scenario2erpt=scenario2erpt,
-                             filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
-                             onboarding_scenario=onboarding_scenario,
-                             exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
-                             filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
-                             deal_income_tib_per_yr=deal_income_tib_per_yr,
-                             data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
+    power_cost_tib_per_yr = st.session_state['power_cost']
+    bw_cost_tib_per_yr = st.session_state['bw_cost']
+    staff_cost_tib_per_yr = st.session_state['staff_cost']
+
+    df = utils.compute_costs(
+        scenario2erpt=scenario2erpt,
+        filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+        onboarding_scenario=onboarding_scenario,
+        exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
+        filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+        deal_income_tib_per_yr=deal_income_tib_per_yr,
+        data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
+        power_cost_tib_per_yr=power_cost_tib_per_yr, bw_cost_tib_per_yr=bw_cost_tib_per_yr,
+        staff_cost_tib_per_yr=staff_cost_tib_per_yr
+    )
     plot_costs(df)
 
 def plot_costs(df):
@@ -180,6 +188,21 @@ with st.sidebar:
         st.slider(
             'Cheating Penalty ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=0.0, step=1.0, format='%0.02f', key="cheating_penalty",
+            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Power+COLO Cost ($/TiB/Yr)', 
+            min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="power_cost",
+            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Bandwidth [10GBPS] Cost ($/TiB/Yr)', 
+            min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="bw_cost",
+            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Staff Cost ($/TiB/Yr)', 
+            min_value=0.0, max_value=10.0, value=6.0, step=1.0, format='%0.02f', key="staff_cost",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
     with st.expander("Multipliers", expanded=False):

@@ -72,7 +72,10 @@ def compute_costs(scenario2erpt=None,
                   exchange_rate=4.0, borrowing_cost_pct=50,
                   filp_bd_cost_tib_per_yr=8.0, rd_bd_cost_tib_per_yr=3.2,
                   deal_income_tib_per_yr=16.0,
-                  data_prep_cost_tib_per_yr=1.0, penalty_tib_per_yr=0.0
+                  data_prep_cost_tib_per_yr=1.0, penalty_tib_per_yr=0.0,
+                  power_cost_tib_per_yr=6, 
+                  bandwidth_10gbps_tib_per_yr=6, 
+                  staff_cost_tib_per_yr=10
                   ):
     erpt = scenario2erpt[onboarding_scenario]
     
@@ -81,10 +84,12 @@ def compute_costs(scenario2erpt=None,
 
     gas_cost_tib_per_yr = (2250.+108.)/1024.
     gas_cost_without_psd_tib_per_yr = 108./1024.
-    power_cost_tib_per_yr = 6000/1024.0
-    bandwidth_10gbps_tib_per_yr = 6600/1024.0
-    bandwidth_1gbps_tib_per_yr = 660/1024.0
-    staff_cost_tib_per_yr = 9830.0/1024.0  # $10k/yr/TiB
+    bandwidth_1gbps_tib_per_yr=bandwidth_10gbps_tib_per_yr/10.0
+    
+    # power_cost_tib_per_yr = 6000/1024.0
+    # bandwidth_10gbps_tib_per_yr = 6600/1024.0
+    # bandwidth_1gbps_tib_per_yr = 660/1024.0
+    # staff_cost_tib_per_yr = 9830.0/1024.0  # $10k/yr/TiB
 
     # create a dataframe for each of the miner profiles
     filp_miner = {
