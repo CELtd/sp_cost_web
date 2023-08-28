@@ -21,7 +21,7 @@ import mechafil_jax.date_utils as du
 
 import scenario_generator.utils as u
 
-from . import utils
+import utils  # streamlit runs from root directory, so we can import utils directly
 
 def local_css(file_name):
     with open(file_name) as f:
