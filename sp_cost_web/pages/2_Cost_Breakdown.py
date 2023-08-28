@@ -292,7 +292,7 @@ mo_start = min(current_date.month - 1 % 12, 1)
 start_date = date(current_date.year, mo_start, 1)
 forecast_length_days=365*3
 end_date = current_date + timedelta(days=forecast_length_days)
-scenario2erpt = get_offline_data(start_date, current_date, end_date)
+scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)
 compute_costs_kwargs = {
     'scenario2erpt':scenario2erpt
 }
