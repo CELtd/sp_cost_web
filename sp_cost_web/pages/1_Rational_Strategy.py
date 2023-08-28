@@ -18,19 +18,20 @@ st.set_page_config(
 def generate_plots(borrowing_cost_df):
     col1, col2 = st.columns(2)
 
-    sort_order = OrderedDict(
-        [
-            ('FIL+', 2), 
-            ('FIL+ Cheat', 3), 
-            ('FIL+ Exploit', 1),
-            ('Regular Deal', 4),
-            ('CC', 5),
-        ]
-    )
+    # sort_order = OrderedDict(
+    #     [
+    #         ('FIL+', 2), 
+    #         ('FIL+ Cheat', 3), 
+    #         ('FIL+ Exploit', 1),
+    #         ('Regular Deal', 4),
+    #         ('CC', 5),
+    #     ]
+    # )
+    sort_order = ['FIL+ Exploit', 'FIL+', 'FIL+ Cheat', 'Regular Deal', 'CC']
     with col1:
         borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_rect().encode(
             alt.X("borrowing_cost_pct:N").title("Borrowing Cost Pct").axis(labelAngle=0),  # why does format=%0.02f in axis(...) not work?
-            alt.Y("SP Type:O", sort=alt.EncodingSortField(field='SP Type', order=sort_order)).title("Strategy"),
+            alt.Y("SP Type:O", sort=sort_order).title("Strategy"),
             alt.Color("rank:N").title("Ranking").scale(scheme='lighttealblue', reverse=True),
             tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
