@@ -21,7 +21,7 @@ def generate_plots(borrowing_cost_df):
     sort_order = ['FIL+ Exploit', 'FIL+', 'FIL+ Cheat', 'Regular Deal', 'CC']
     with col1:
         borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_rect().encode(
-            alt.X("borrowing_cost_pct:N").title("Borrowing Cost Pct").axis(format='%0.02f', labelAngle=0),  # why does format=%0.02f in axis(...) not work?
+            alt.X("borrowing_cost_pct:N").title("Borrowing Cost Pct").axis(labelAngle=0, format="{0.00}"),  # why does format=%0.02f in axis(...) not work?
             alt.Y("SP Type:O", sort=sort_order).title("Strategy"),
             alt.Color("rank:N").title("Ranking").scale(scheme='lightmulti', reverse=True),
             tooltip=[
