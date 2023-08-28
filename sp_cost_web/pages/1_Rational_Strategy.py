@@ -15,9 +15,9 @@ st.set_page_config(
     layout="wide",
 )
 
-st.write("## Parametric Exploration of Rational Strategy")
-
 def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df):
+    st.write("## Parametric Exploration of Rational Strategy")
+    
     col1, col2 = st.columns(2)
 
     with col1:
