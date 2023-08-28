@@ -20,19 +20,9 @@ def generate_plots(borrowing_cost_df):
 
     sort_order = ['FIL+ Exploit', 'FIL+', 'FIL+ Cheat', 'Regular Deal', 'CC']
     with col1:
-        # borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_rect().encode(
-        #     alt.X("borrowing_cost_pct:N").title("Borrowing Cost Pct").axis(labelAngle=0, format='.2f'),  # why does format=%0.02f in axis(...) not work?
-        #     alt.Y("SP Type:O", sort=sort_order).title("Strategy"),
-        #     alt.Color("rank:N").title("Ranking").scale(scheme='lightmulti', reverse=True),
-        #     tooltip=[
-        #         alt.Tooltip('SP Type', title='Strategy'),
-        #         alt.Tooltip('rank', title='Rank'),
-        #         alt.Tooltip('borrowing_cost_pct', title='Borrowing Cost Pct', format='.2f'),
-        #     ]
-        # )
         borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_line().encode(
-            x=alt.X('borrowing_cost').title('Borrowing Cost Pct'),
-            y=alt.Y('profit').title("$/TiB/Yr"),
+            x=alt.X('borrowing_cost_pct:Q').title('Borrowing Cost Pct'),
+            y=alt.Y('profit:Q').title("$/TiB/Yr"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
@@ -72,6 +62,7 @@ def generate_rankings(scenario2erpt=None):
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         borrowing_cost_plot_vec.append(df[['SP Type', 'rank', 'borrowing_cost_pct', 'profit']])
     borrowing_cost_plot_df = pd.concat(borrowing_cost_plot_vec)
+    borrowing_cost_plot_df['borrowing_cost_pct'] = borrowing_cost_plot_df['borrowing_cost_pct'].astype(float)
 
     # sweep deal_income
 
