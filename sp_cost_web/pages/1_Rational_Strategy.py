@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df, bizdev_cost_plot_df):
-    st.write("## Parametric Exploration of Rational Strategy")
+    st.write("### Exploration of rational strategy conditioned on individual factors")
 
     col1, col2 = st.columns(2)
 
@@ -154,8 +154,8 @@ def generate_rankings(scenario2erpt=None):
         df['bizdev_cost'] = bizdev_cost
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         bizdev_cost_plot_vec.append(df[['SP Type', 'rank', 'bizdev_cost', 'profit']])
+        print(df[['SP Type', 'bizdev_cost', 'profit']])
     bizdev_cost_plot_df = pd.concat(bizdev_cost_plot_vec)
-
 
     # plot
     generate_plots(borrowing_cost_plot_df, deal_income_plot_df, data_prepcost_plot_df, bizdev_cost_plot_df)
