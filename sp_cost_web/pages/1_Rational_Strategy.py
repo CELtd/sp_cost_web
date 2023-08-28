@@ -15,9 +15,9 @@ st.set_page_config(
     layout="wide",
 )
 
-def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df):
+def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df, bizdev_cost_plot_df):
     st.write("## Parametric Exploration of Rational Strategy")
-    
+
     col1, col2 = st.columns(2)
 
     with col1:
@@ -58,6 +58,18 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
         )
         st.altair_chart(deal_income_chart, use_container_width=True)
 
+        bizdev_cost_chart = alt.Chart(bizdev_cost_plot_df, title="BizDev Cost \n Assumption: FIL+=2x RD").mark_line().encode(
+            x=alt.X('bizdev_cost:Q').title('BizDev Cost [$/TiB/Yr]'),
+            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
+            color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
+                tooltip=[
+                alt.Tooltip('SP Type', title='Strategy'),
+                alt.Tooltip('profit', title='Profit'),
+                alt.Tooltip('bizdev_cost', title='BizDev Cost', format='.2f'),
+            ]
+        )
+        st.altair_chart(bizdev_cost_chart, use_container_width=True)
+
 
 
 def generate_rankings(scenario2erpt=None):
@@ -70,13 +82,14 @@ def generate_rankings(scenario2erpt=None):
     
     exchange_rate =  st.session_state['rs_filprice_slider']
     borrowing_cost_pct = st.session_state['rs_borrow_cost_pct'] / 100.0
-    bd_cost_tib_per_yr = st.session_state['rs_bizdev_cost']
+    filp_bd_cost_tib_per_yr = st.session_state['rs_filp_bizdev_cost']
+    rd_bd_cost_tib_per_yr = st.session_state['rs_rd_bizdev_cost']
     deal_income_tib_per_yr = st.session_state['rs_deal_income']
     data_prep_cost_tib_per_yr = st.session_state['rs_data_prep_cost']
     penalty_tib_per_yr = st.session_state['rs_cheating_penalty']
 
     # sweep borrowing_cost, fix other costs
-    borrowing_cost_vec = np.linspace(0,100,50)
+    borrowing_cost_vec = np.linspace(0,100,25)
     borrowing_cost_plot_vec = []
     for borrowing_cost_sweep_pct in borrowing_cost_vec:
         borrowing_cost_sweep_frac = borrowing_cost_sweep_pct/100.0
@@ -84,7 +97,8 @@ def generate_rankings(scenario2erpt=None):
                                 filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
                                 onboarding_scenario=onboarding_scenario,
                                 exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_sweep_frac,
-                                bd_cost_tib_per_yr=bd_cost_tib_per_yr, deal_income_tib_per_yr=deal_income_tib_per_yr,
+                                filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+                                deal_income_tib_per_yr=deal_income_tib_per_yr,
                                 data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
         df['borrowing_cost_pct'] = borrowing_cost_sweep_pct
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
@@ -92,14 +106,15 @@ def generate_rankings(scenario2erpt=None):
     borrowing_cost_plot_df = pd.concat(borrowing_cost_plot_vec)
 
     # sweep deal_income
-    deal_income_vec = np.linspace(0,100,50)
+    deal_income_vec = np.linspace(0,100,25)
     deal_income_plot_vec = []
     for deal_income_sweep in deal_income_vec:
         df = utils.compute_costs(scenario2erpt=scenario2erpt,
                                 filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
                                 onboarding_scenario=onboarding_scenario,
                                 exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
-                                bd_cost_tib_per_yr=bd_cost_tib_per_yr, deal_income_tib_per_yr=deal_income_sweep,
+                                filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+                                deal_income_tib_per_yr=deal_income_tib_per_yr,
                                 data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
         df['deal_income'] = deal_income_sweep
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
@@ -107,14 +122,15 @@ def generate_rankings(scenario2erpt=None):
     deal_income_plot_df = pd.concat(deal_income_plot_vec)
 
     # sweep data_prep_cost
-    data_prepcost_vec = np.linspace(0,100,50)
+    data_prepcost_vec = np.linspace(0,100,25)
     data_prepcost_plot_vec = []
     for data_prepcost_sweep in data_prepcost_vec:
         df = utils.compute_costs(scenario2erpt=scenario2erpt,
                                 filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
                                 onboarding_scenario=onboarding_scenario,
                                 exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
-                                bd_cost_tib_per_yr=bd_cost_tib_per_yr, deal_income_tib_per_yr=deal_income_sweep,
+                                filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+                                deal_income_tib_per_yr=deal_income_tib_per_yr,
                                 data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr)
         df['data_prepcost'] = data_prepcost_sweep
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
@@ -122,9 +138,27 @@ def generate_rankings(scenario2erpt=None):
     data_prepcost_plot_df = pd.concat(data_prepcost_plot_vec)
 
     # sweep bizdev_cost
+    #  assume RD bizdev cost = 50% of FIL+ bizdev cost
+    bizdev_cost_vec = np.linspace(0,100,25)
+    bizdev_cost_plot_vec = []
+    for bizdev_cost in bizdev_cost_vec:
+        filp_bizdev_cost = bizdev_cost
+        rd_bizdev_cost = bizdev_cost * 0.5
+        df = utils.compute_costs(scenario2erpt=scenario2erpt,
+                                filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+                                onboarding_scenario=onboarding_scenario,
+                                exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
+                                filp_bd_cost_tib_per_yr=filp_bizdev_cost, rd_bd_cost_tib_per_yr=rd_bizdev_cost,
+                                deal_income_tib_per_yr=deal_income_tib_per_yr,
+                                data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr)
+        df['bizdev_cost'] = data_prepcost_sweep
+        df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
+        bizdev_cost_plot_vec.append(df[['SP Type', 'rank', 'bizdev_cost', 'profit']])
+    bizdev_cost_plot_df = pd.concat(bizdev_cost_plot_vec)
+
 
     # plot
-    generate_plots(borrowing_cost_plot_df, deal_income_plot_df, data_prepcost_plot_df)
+    generate_plots(borrowing_cost_plot_df, deal_income_plot_df, data_prepcost_plot_df, bizdev_cost_plot_df)
 
 current_date = date.today() - timedelta(days=3)
 mo_start = min(current_date.month - 1 % 12, 1)
@@ -159,8 +193,13 @@ with st.sidebar:
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'Biz Dev Cost (TiB/Yr)', 
-            min_value=5.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="rs_bizdev_cost",
+            'FIL+ Biz Dev Cost (TiB/Yr)', 
+            min_value=5.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="rs_filp_bizdev_cost",
+            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'RD Biz Dev Cost (TiB/Yr)', 
+            min_value=5.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="rs_rd_bizdev_cost",
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(

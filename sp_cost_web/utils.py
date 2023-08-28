@@ -70,7 +70,8 @@ def compute_costs(scenario2erpt=None,
                   filp_multiplier=10, rd_multiplier=1, cc_multiplier=1,
                   onboarding_scenario='status-quo',
                   exchange_rate=4.0, borrowing_cost_pct=50,
-                  bd_cost_tib_per_yr=8.0, deal_income_tib_per_yr=16.0,
+                  filp_bd_cost_tib_per_yr=8.0, rd_bd_cost_tib_per_yr=3.2,
+                  deal_income_tib_per_yr=16.0,
                   data_prep_cost_tib_per_yr=1.0, penalty_tib_per_yr=0.0
                   ):
     erpt = scenario2erpt[onboarding_scenario]
@@ -97,7 +98,7 @@ def compute_costs(scenario2erpt=None,
         'staff_cost': staff_cost_tib_per_yr,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
-        'bd_cost': 0.5*deal_income_tib_per_yr,
+        'bd_cost': filp_bd_cost_tib_per_yr,
         'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': 0
     }
@@ -112,7 +113,7 @@ def compute_costs(scenario2erpt=None,
         'staff_cost': staff_cost_tib_per_yr,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
-        'bd_cost': deal_income_tib_per_yr*0.2,
+        'bd_cost': rd_bd_cost_tib_per_yr,
         'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': 0
     }

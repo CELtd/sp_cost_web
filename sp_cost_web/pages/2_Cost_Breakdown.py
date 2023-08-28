@@ -37,7 +37,8 @@ def compute_costs(scenario2erpt=None):
     
     exchange_rate =  st.session_state['filprice_slider']
     borrowing_cost_pct = st.session_state['borrow_cost_pct'] / 100.0
-    bd_cost_tib_per_yr = st.session_state['bizdev_cost']
+    filp_bd_cost_tib_per_yr = st.session_state['filp_bizdev_cost']
+    rd_bd_cost_tib_per_yr = st.session_state['rd_bizdev_cost']
     deal_income_tib_per_yr = st.session_state['deal_income']
     data_prep_cost_tib_per_yr = st.session_state['data_prep_cost']
     penalty_tib_per_yr = st.session_state['cheating_penalty']
@@ -46,7 +47,8 @@ def compute_costs(scenario2erpt=None):
                              filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
                              onboarding_scenario=onboarding_scenario,
                              exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
-                             bd_cost_tib_per_yr=bd_cost_tib_per_yr, deal_income_tib_per_yr=deal_income_tib_per_yr,
+                             filp_bd_cost_tib_per_yr=filp_bd_cost_tib_per_yr, rd_bd_cost_tib_per_yr=rd_bd_cost_tib_per_yr,
+                             deal_income_tib_per_yr=deal_income_tib_per_yr,
                              data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
     plot_costs(df)
 
@@ -161,8 +163,13 @@ with st.sidebar:
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'Biz Dev Cost (TiB/Yr)', 
-            min_value=5.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="bizdev_cost",
+            'FIL+ Biz Dev Cost (TiB/Yr)', 
+            min_value=5.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="filp_bizdev_cost",
+            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'RD Biz Dev Cost (TiB/Yr)', 
+            min_value=5.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="rd_bizdev_cost",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
