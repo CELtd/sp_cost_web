@@ -24,9 +24,9 @@ We examine five different SP strategies for participating in the Filecoin networ
 
 Two interactive calculators are provided. Both have slider bars that allow you to explore how different variables, such as the token exchange rate, costs associated with business development, network power onboarding rates, and data preparation costs, affect each SP strategy's net income. 
 
-The first calculator graphically breaks down the different costs associated with each SP strategy. It also shows a bar graph of the expected profit, rank ordered by most rational strategy to least rational strategy.
+The first calculator (**Cost Breakdown**) graphically breaks down the different costs associated with each SP strategy. It also shows a bar graph of the expected profit, rank ordered by most rational strategy to least rational strategy.
 
-The second calculator parametrically explores how an individual variable affects the profit of each SP strategy. In this app, the plot's title indicates the variable being explored. All other variables which go into the cost calculation are held constant and set by the slider bar values.
+The second calculator (**Rational Strategy**) explores how an individual variable affects the profit of each SP strategy. In this app, the plot's title indicates the variable being explored. All other variables which go into the cost calculation are held constant and set by the slider bar values.
 
 In both calculators, the expected income from block rewards is computed using [MechaFil](https://github.com/protocol/mechafil-jax), a digital twin of the Filecoin economy. 
 

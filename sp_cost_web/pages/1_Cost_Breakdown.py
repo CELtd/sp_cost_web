@@ -171,12 +171,12 @@ with st.sidebar:
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'FIL+ Biz Dev Cost (TiB/Yr)', 
+            'FIL+ Biz Dev Cost ($/TiB/Yr)', 
             min_value=1.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="filp_bizdev_cost",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'RD Biz Dev Cost (TiB/Yr)', 
+            'RD Biz Dev Cost ($/TiB/Yr)', 
             min_value=1.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="rd_bizdev_cost",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
