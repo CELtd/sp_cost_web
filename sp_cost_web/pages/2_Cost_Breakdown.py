@@ -21,7 +21,7 @@ import mechafil_jax.date_utils as du
 
 import scenario_generator.utils as u
 
-import lib
+from . import utils
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -206,7 +206,7 @@ def local_css(file_name):
 #     plot_costs(df)
 
 def compute_costs(scenario2erpt=None):
-    df = lib.compute_costs(scenario2erpt=scenario2erpt)
+    df = utils.compute_costs(scenario2erpt=scenario2erpt)
     plot_costs(df)
 
 def plot_costs(df):
