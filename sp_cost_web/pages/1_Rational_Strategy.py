@@ -127,3 +127,4 @@ with st.sidebar:
             'FIL+', min_value=1, max_value=20, value=10, step=1, key="rs_filp_multiplier",
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
+    st.button("Compute!", on_click=generate_rankings, kwargs=kwargs, key="forecast_button")
