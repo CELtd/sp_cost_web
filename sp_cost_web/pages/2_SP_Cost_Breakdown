@@ -281,7 +281,7 @@ def plot_costs(df):
     
 def main():
     st.set_page_config(
-        page_title="Cost Explorer",
+        page_title="Cost Breakdown",
         page_icon="🚀",  # TODO: can update this to the FIL logo
         layout="wide",
     )
@@ -310,7 +310,7 @@ def main():
         with st.expander("Revenue Settings", expanded=False):
             st.slider(
                 'Deal Income ($/TiB/Yr)', 
-                min_value=0.0, max_value=50.0, value=16.0, step=1.0, format='%0.02f', key="deal_income",
+                min_value=0.0, max_value=100.0, value=16.0, step=1.0, format='%0.02f', key="deal_income",
                 on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
             )
         with st.expander("Cost Settings", expanded=False):
