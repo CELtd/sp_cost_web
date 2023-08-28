@@ -10,19 +10,20 @@ import pandas as pd
 import utils  # streamlit runs from root directory, so we can import utils directly
 
 st.set_page_config(
-    page_title="Rational Strategy", 
+    page_title="Parametric Exploration of Rational Strategy", 
     page_icon=":brain:",
     layout="wide",
 )
 
-def generate_plots(borrowing_cost_df):
+st.write("## Parametric Exploration of Rational Strategy")
+
+def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df):
     col1, col2 = st.columns(2)
 
-    sort_order = ['FIL+ Exploit', 'FIL+', 'FIL+ Cheat', 'Regular Deal', 'CC']
     with col1:
         borrowing_cost_chart = alt.Chart(borrowing_cost_df, title="Borrowing Cost").mark_line().encode(
-            x=alt.X('borrowing_cost_pct:Q').title('Borrowing Cost Pct'),
-            y=alt.Y('profit:Q').title("$/TiB/Yr"),
+            x=alt.X('borrowing_cost_pct:Q').title('Borrowing Cost Pct [%]'),
+            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
                 tooltip=[
                 alt.Tooltip('SP Type', title='Strategy'),
@@ -31,6 +32,33 @@ def generate_plots(borrowing_cost_df):
             ]
         )
         st.altair_chart(borrowing_cost_chart, use_container_width=True)
+
+        data_prepcost_chart = alt.Chart(data_prepcost_plot_df, title="Data-Prep Cost").mark_line().encode(
+            x=alt.X('data_prepcost:Q').title('Data-Prep Cost [$/TiB/Yr]'),
+            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
+            color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
+                tooltip=[
+                alt.Tooltip('SP Type', title='Strategy'),
+                alt.Tooltip('profit', title='Profit'),
+                alt.Tooltip('data_prepcost', title='Data-Prep Cost', format='.2f'),
+            ]
+        )
+        st.altair_chart(data_prepcost_chart, use_container_width=True)
+
+    with col2:
+        deal_income_chart = alt.Chart(deal_income_plot_df, title="Deal Income").mark_line().encode(
+            x=alt.X('deal_income:Q').title('Deal Income [$/TiB/Yr]'),
+            y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
+            color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
+                tooltip=[
+                alt.Tooltip('SP Type', title='Strategy'),
+                alt.Tooltip('profit', title='Profit'),
+                alt.Tooltip('deal_income', title='Deal Income', format='.2f'),
+            ]
+        )
+        st.altair_chart(deal_income_chart, use_container_width=True)
+
+
 
 def generate_rankings(scenario2erpt=None):
     # get fixed costs
@@ -62,16 +90,41 @@ def generate_rankings(scenario2erpt=None):
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         borrowing_cost_plot_vec.append(df[['SP Type', 'rank', 'borrowing_cost_pct', 'profit']])
     borrowing_cost_plot_df = pd.concat(borrowing_cost_plot_vec)
-    borrowing_cost_plot_df['borrowing_cost_pct'] = borrowing_cost_plot_df['borrowing_cost_pct'].astype(float)
 
     # sweep deal_income
+    deal_income_vec = np.linspace(0,100,50)
+    deal_income_plot_vec = []
+    for deal_income_sweep in deal_income_vec:
+        df = utils.compute_costs(scenario2erpt=scenario2erpt,
+                                filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+                                onboarding_scenario=onboarding_scenario,
+                                exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
+                                bd_cost_tib_per_yr=bd_cost_tib_per_yr, deal_income_tib_per_yr=deal_income_sweep,
+                                data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
+        df['deal_income'] = deal_income_sweep
+        df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
+        deal_income_plot_vec.append(df[['SP Type', 'rank', 'deal_income', 'profit']])
+    deal_income_plot_df = pd.concat(deal_income_plot_vec)
 
     # sweep data_prep_cost
+    data_prepcost_vec = np.linspace(0,100,50)
+    data_prepcost_plot_vec = []
+    for data_prepcost_sweep in data_prepcost_vec:
+        df = utils.compute_costs(scenario2erpt=scenario2erpt,
+                                filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
+                                onboarding_scenario=onboarding_scenario,
+                                exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
+                                bd_cost_tib_per_yr=bd_cost_tib_per_yr, deal_income_tib_per_yr=deal_income_sweep,
+                                data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr)
+        df['data_prepcost'] = data_prepcost_sweep
+        df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
+        data_prepcost_plot_vec.append(df[['SP Type', 'rank', 'data_prepcost', 'profit']])
+    data_prepcost_plot_df = pd.concat(data_prepcost_plot_vec)
 
     # sweep bizdev_cost
 
     # plot
-    generate_plots(borrowing_cost_plot_df)
+    generate_plots(borrowing_cost_plot_df, deal_income_plot_df, data_prepcost_plot_df)
 
 current_date = date.today() - timedelta(days=3)
 mo_start = min(current_date.month - 1 % 12, 1)
