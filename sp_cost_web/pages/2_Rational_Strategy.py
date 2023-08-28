@@ -243,7 +243,7 @@ with st.sidebar:
         )
         st.slider(
             'Staff Cost ($/TiB/Yr)', 
-            min_value=0.0, max_value=10.0, value=6.0, step=1.0, format='%0.02f', key="rs_staff_cost",
+            min_value=0.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="rs_staff_cost",
             on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
     with st.expander("Multipliers", expanded=False):
