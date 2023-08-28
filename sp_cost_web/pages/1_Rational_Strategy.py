@@ -58,7 +58,7 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
         )
         st.altair_chart(deal_income_chart, use_container_width=True)
 
-        bizdev_cost_chart = alt.Chart(bizdev_cost_plot_df, title="BizDev Cost \n Assumption: FIL+=2x RD").mark_line().encode(
+        bizdev_cost_chart = alt.Chart(bizdev_cost_plot_df, title="BizDev Cost [Assumption: FIL+=2x RD Cost]").mark_line().encode(
             x=alt.X('bizdev_cost:Q').title('BizDev Cost [$/TiB/Yr]'),
             y=alt.Y('profit:Q').title("Profit [$/TiB/Yr]"),
             color=alt.Color('SP Type:O', scale=alt.Scale(scheme='tableau20')),
@@ -151,7 +151,7 @@ def generate_rankings(scenario2erpt=None):
                                 filp_bd_cost_tib_per_yr=filp_bizdev_cost, rd_bd_cost_tib_per_yr=rd_bizdev_cost,
                                 deal_income_tib_per_yr=deal_income_tib_per_yr,
                                 data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr)
-        df['bizdev_cost'] = data_prepcost_sweep
+        df['bizdev_cost'] = bizdev_cost
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         bizdev_cost_plot_vec.append(df[['SP Type', 'rank', 'bizdev_cost', 'profit']])
     bizdev_cost_plot_df = pd.concat(bizdev_cost_plot_vec)
