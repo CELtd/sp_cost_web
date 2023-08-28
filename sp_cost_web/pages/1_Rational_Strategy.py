@@ -69,7 +69,6 @@ def generate_plots(borrowing_cost_df, deal_income_plot_df, data_prepcost_plot_df
             ]
         )
         st.altair_chart(bizdev_cost_chart, use_container_width=True)
-        raise ValueError(bizdev_cost_plot_df)
 
 
 
@@ -151,7 +150,7 @@ def generate_rankings(scenario2erpt=None):
                                 exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost_pct,
                                 filp_bd_cost_tib_per_yr=filp_bizdev_cost, rd_bd_cost_tib_per_yr=rd_bizdev_cost,
                                 deal_income_tib_per_yr=deal_income_tib_per_yr,
-                                data_prep_cost_tib_per_yr=data_prepcost_sweep, penalty_tib_per_yr=penalty_tib_per_yr)
+                                data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr)
         df['bizdev_cost'] = bizdev_cost
         df['rank'] = df.sort_values(by='profit', ascending=False).index.values        
         bizdev_cost_plot_vec.append(df[['SP Type', 'rank', 'bizdev_cost', 'profit']])
