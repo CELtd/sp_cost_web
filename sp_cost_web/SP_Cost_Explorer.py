@@ -14,7 +14,7 @@ st.markdown(
     ### Filecoin SP Cost Explorer
 This web app enables an interactive exploration of how various costs and revenues affect the final net income of Storage Providers (SPs) in the Filecoin network. 
 
-We examine five different SP strategies for participating in the Filecoin network:
+We examine six different SP strategies for participating in the Filecoin network:
 
 1. FIL+: This models a FIL+ SP. Additional costs associated with being a FIL+ miner include: a) storing additional copies, b) increased bandwidth cost, c) business development costs, d) increased pledge collateral costs, and
 2. Regular Deal (RD): This models an SP that is growing a storage business *without* FIL+. Their BizDev and bandwidth costs can be lower, and their pledge is lower, but they also receive less block rewards.
