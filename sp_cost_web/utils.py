@@ -114,7 +114,7 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
         'bd_cost': rd_bd_cost_tib_per_yr,
-        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.5,
         'cheating_cost': 0
     }
     filp_exploit_miner = {
@@ -144,7 +144,7 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': 1,
         'bd_cost': 0,
-        'extra_copy_cost': (staff_cost_tib_per_yr*0.5+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr*0.5+bandwidth_10gbps_tib_per_yr)*0.5,
         'cheating_cost': 0
     }
     filp_exploit_with_retrieval_and_slash = {
@@ -159,7 +159,7 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': 1,
         'bd_cost': 0,
-        'extra_copy_cost': (staff_cost_tib_per_yr*0.5+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr*0.5+bandwidth_10gbps_tib_per_yr)*0.5,
         'cheating_cost': penalty_tib_per_yr
     }
     cc_miner = {
