@@ -118,7 +118,7 @@ def compute_costs(scenario2erpt=None,
         'cheating_cost': 0
     }
     filp_exploit_miner = {
-        'SP Type':'FIL+ Exploit',
+        'SP Type':'V1-ExploitFIL+',
         'block_rewards': erpt*exchange_rate*filp_multiplier,
         'deal_income': 0,
         'pledge_cost': erpt*exchange_rate*filp_multiplier*borrowing_cost_pct,
@@ -133,7 +133,7 @@ def compute_costs(scenario2erpt=None,
         'cheating_cost': 0
     }
     filp_exploit_with_retrieval = {
-        'SP Type':'FIL+ Exploit w/ Retrieval Test',
+        'SP Type':'V2-ExploitFIL+',
         'block_rewards': erpt*exchange_rate*filp_multiplier,
         'deal_income': 0,
         'pledge_cost': erpt*exchange_rate*filp_multiplier*borrowing_cost_pct,
@@ -148,7 +148,7 @@ def compute_costs(scenario2erpt=None,
         'cheating_cost': 0
     }
     filp_exploit_with_retrieval_and_slash = {
-        'SP Type':'FIL+ Exploit w/ Retrieval Test and Slashing',
+        'SP Type':'V3-ExploitFIL+',
         'block_rewards': erpt*exchange_rate*filp_multiplier,
         'deal_income': 0,
         'pledge_cost': erpt*exchange_rate*filp_multiplier*borrowing_cost_pct,
