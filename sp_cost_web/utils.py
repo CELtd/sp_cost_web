@@ -86,11 +86,6 @@ def compute_costs(scenario2erpt=None,
     gas_cost_without_psd_tib_per_yr = 108./1024.
     bandwidth_1gbps_tib_per_yr=bandwidth_10gbps_tib_per_yr/10.0
     
-    # power_cost_tib_per_yr = 6000/1024.0
-    # bandwidth_10gbps_tib_per_yr = 6600/1024.0
-    # bandwidth_1gbps_tib_per_yr = 660/1024.0
-    # staff_cost_tib_per_yr = 9830.0/1024.0  # $10k/yr/TiB
-
     # create a dataframe for each of the miner profiles
     filp_miner = {
         'SP Type': 'FIL+',
@@ -104,7 +99,7 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
         'bd_cost': filp_bd_cost_tib_per_yr,
-        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.5,
         'cheating_cost': 0
     }
     rd_miner = {
@@ -119,7 +114,7 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
         'bd_cost': rd_bd_cost_tib_per_yr,
-        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.9,
         'cheating_cost': 0
     }
     filp_exploit_miner = {
@@ -135,10 +130,10 @@ def compute_costs(scenario2erpt=None,
         'data_prep_cost': 1,
         'bd_cost': 0,
         'extra_copy_cost': 0,
-        'cheating_cost': penalty_tib_per_yr
+        'cheating_cost': 0
     }
-    filp_cheat_miner = {
-        'SP Type':'FIL+ Cheat',
+    filp_exploit_with_retrieval = {
+        'SP Type':'FIL+ Exploit w/ Retrieval Test',
         'block_rewards': erpt*exchange_rate*filp_multiplier,
         'deal_income': 0,
         'pledge_cost': erpt*exchange_rate*filp_multiplier*borrowing_cost_pct,
@@ -149,7 +144,22 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': 1,
         'bd_cost': 0,
-        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr+bandwidth_10gbps_tib_per_yr)*0.9,
+        'extra_copy_cost': (staff_cost_tib_per_yr*0.5+bandwidth_10gbps_tib_per_yr)*0.9,
+        'cheating_cost': 0
+    }
+    filp_exploit_with_retrieval_and_slash = {
+        'SP Type':'FIL+ Exploit w/ Retrieval Test and Slashing',
+        'block_rewards': erpt*exchange_rate*filp_multiplier,
+        'deal_income': 0,
+        'pledge_cost': erpt*exchange_rate*filp_multiplier*borrowing_cost_pct,
+        'gas_cost': gas_cost_tib_per_yr,
+        'power_cost': power_cost_tib_per_yr,
+        'bandwidth_cost': bandwidth_10gbps_tib_per_yr,
+        'staff_cost': staff_cost_tib_per_yr,
+        'sealing_cost': sealing_costs_tib_per_yr,
+        'data_prep_cost': 1,
+        'bd_cost': 0,
+        'extra_copy_cost': (staff_cost_tib_per_yr*0.5+bandwidth_10gbps_tib_per_yr)*0.9,
         'cheating_cost': penalty_tib_per_yr
     }
     cc_miner = {
@@ -183,7 +193,7 @@ def compute_costs(scenario2erpt=None,
         'cheating_cost': 0
     }
     # df = pd.DataFrame([filp_miner, rd_miner, filp_exploit_miner, filp_cheat_miner, cc_miner, aws])
-    df = pd.DataFrame([filp_miner, rd_miner, filp_exploit_miner, filp_cheat_miner, cc_miner])
+    df = pd.DataFrame([filp_miner, rd_miner, filp_exploit_miner, filp_exploit_with_retrieval, filp_exploit_with_retrieval_and_slash, cc_miner])
     # add final accounting to the DF
     revenue = df['block_rewards'] + df['deal_income']
     cost = (

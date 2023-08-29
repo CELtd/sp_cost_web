@@ -186,8 +186,8 @@ with st.sidebar:
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'Cheating Penalty ($/TiB/Yr)', 
-            min_value=0.0, max_value=50.0, value=0.0, step=1.0, format='%0.02f', key="cheating_penalty",
+            'FIL+ Slashing Penalty ($/TiB/Yr)', 
+            min_value=0.0, max_value=18.0, value=0.0, step=1.0, format='%0.02f', key="cheating_penalty",
             on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
