@@ -14,9 +14,9 @@ def generate_plots(minimum_m_df):
         x=alt.X('exchange_rate:Q', title='Exchange Rate [$/FIL]'),
         y=alt.Y('minimum_m:Q', title='Multiplier'),
         color=alt.Color(
-            'cost_scaling:N', 
+            'cost_scaling_str:N', 
             scale=alt.Scale(scheme='tableau20'),
-            legend=alt.Legend(title='Cost Scaling', values=['As Configured', '-20% from Configured', '+20% from Configured'])
+            legend=alt.Legend(title='Cost Scaling')
         ),
     )
     st.altair_chart(c, use_container_width=True)
@@ -61,6 +61,7 @@ def compute_minimum_multiplier(scenario2erpt=None):
             minimum_m = max(1,(cost_no_multiplier - revenue + sector_return_nomult)/(sector_return_nomult - cost_multiplier))
             minimum_m_results.append({
                 'cost_scaling': cost_scaling,
+                'cost_scaling_str': f'{cost_scaling}x',
                 'exchange_rate': exchange_rate,
                 'minimum_m': minimum_m
             })
