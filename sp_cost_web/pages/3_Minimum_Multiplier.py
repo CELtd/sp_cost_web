@@ -10,6 +10,20 @@ import pandas as pd
 import utils  # streamlit runs from root directory, so we can import utils directly
 
 def generate_plots(minimum_m_df):
+    st.markdown(
+        """
+        ## Minimum Quality Multiplier
+        The following plot shows the minimum quality multiplier needed for the FIL+ strategy to be more 
+        profitable than the CC strategy. This is simulated from a network perspective, rather than an individual SP perspective.
+        
+        The slider bars on the left control the cost of the CC sector, and the multiplier to scale from the CC sector cost to the Deal sector cost.
+        Additional variables that can be controlled include the exchange rate, and the expected income from deals per TiB.
+
+        Three lines are shown, for different cost scalings. Each line represents a cost value that is scaled by the indicated value in the legend, in order to quickly
+        see how changes in cost affect the required minimum multiplier.
+"""
+    )
+
     c = alt.Chart(minimum_m_df, title='Minimum Quality Multiplier').mark_line().encode(
         x=alt.X('exchange_rate:Q', title='Exchange Rate [$/FIL]'),
         y=alt.Y('minimum_m:Q', title='Multiplier'),
