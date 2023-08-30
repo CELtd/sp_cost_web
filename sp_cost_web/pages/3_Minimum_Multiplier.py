@@ -89,12 +89,12 @@ with st.sidebar:
     )
     st.slider(
         'CC Sector Cost ($/TiB/Yr)', 
-        min_value=0.0, max_value=100.0, value=16.0, step=1.0, format='%0.02f', key="mm_cc_cost",
+        min_value=0.0, max_value=100.0, value=30.0, step=1.0, format='%0.02f', key="mm_cc_cost",
         on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
     )
     st.slider(
         'Deal Sector Cost Multiplier (X)', 
-        min_value=1.0, max_value=10.0, value=2.0, step=1.0, format='%0.02f', key="mm_deal_cost_multiplier",
+        min_value=1.0, max_value=10.0, value=4.0, step=1.0, format='%0.02f', key="mm_deal_cost_multiplier",
         on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
     )
     st.button("Compute!", on_click=compute_minimum_multiplier, kwargs=kwargs, key="forecast_button")
