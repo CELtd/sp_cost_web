@@ -66,6 +66,17 @@ def get_offline_data(start_date, current_date, end_date):
     
     return scenario2erpt
 
+def get_negligible_costs(bandwidth_10gbps_tib_per_yr):
+    # Definitions (we can make these configurable later, potentially)
+    sealing_costs_tib_per_yr = 1.3
+
+    gas_cost_tib_per_yr = (2250.+108.)/1024.
+    gas_cost_without_psd_tib_per_yr = 108./1024.
+    bandwidth_1gbps_tib_per_yr=bandwidth_10gbps_tib_per_yr/10.0
+
+    return sealing_costs_tib_per_yr, gas_cost_tib_per_yr, gas_cost_without_psd_tib_per_yr, bandwidth_1gbps_tib_per_yr
+
+
 def compute_costs(scenario2erpt=None, 
                   filp_multiplier=10, rd_multiplier=1, cc_multiplier=1,
                   onboarding_scenario='status-quo',
@@ -79,12 +90,7 @@ def compute_costs(scenario2erpt=None,
                   ):
     erpt = scenario2erpt[onboarding_scenario]
     
-    # Definitions (we can make these configurable later, potentially)
-    sealing_costs_tib_per_yr = 1.3
-
-    gas_cost_tib_per_yr = (2250.+108.)/1024.
-    gas_cost_without_psd_tib_per_yr = 108./1024.
-    bandwidth_1gbps_tib_per_yr=bandwidth_10gbps_tib_per_yr/10.0
+    sealing_costs_tib_per_yr, gas_cost_tib_per_yr, gas_cost_without_psd_tib_per_yr, bandwidth_1gbps_tib_per_yr = get_negligible_costs(bandwidth_10gbps_tib_per_yr)
     
     # create a dataframe for each of the miner profiles
     filp_miner = {
