@@ -25,7 +25,7 @@ def compute_minimum_multiplier(scenario2erpt=None):
     onboarding_scenario = st.session_state['mm_onboarding_scenario'].lower()
     deal_income = st.session_state['mm_deal_income']
     cc_cost = st.session_state['mm_cc_cost']
-    deal_cost_multiplier = st.session_state['mm_deal_cost_mutiplier']
+    deal_cost_multiplier = st.session_state['mm_deal_cost_multiplier']
 
     erpt = scenario2erpt[onboarding_scenario]
 
