@@ -13,11 +13,12 @@ def generate_plots(minimum_m_df):
     c = alt.Chart(minimum_m_df, title='Minimum Quality Multiplier').mark_line().encode(
         x=alt.X('exchange_rate:Q', title='Exchange Rate [$/FIL]'),
         y=alt.Y('minimum_m:Q', title='Multiplier'),
-        color=alt.Color('onboarding_scenario:N', scale=alt.Scale(scheme='tableau20'), title='Onboarding Scenario'),
+        color=alt.Color('cost_scaling:Q', scale=alt.Scale(scheme='tableau20'), title='Cost Scaling'),
     )
     st.altair_chart(c, use_container_width=True)
 
 def compute_minimum_multiplier(scenario2erpt=None):
+    onboarding_scenario = st.session_state['mm_onboarding_scenario']
     borrowing_cost_pct = st.session_state['mm_borrow_cost_pct'] / 100.0
     filp_bd_cost_tib_per_yr = st.session_state['mm_filp_bizdev_cost']
     deal_income_tib_per_yr = st.session_state['mm_deal_income']
@@ -30,18 +31,17 @@ def compute_minimum_multiplier(scenario2erpt=None):
 
     sealing_costs_tib_per_yr, gas_cost_tib_per_yr, _, _ = utils.get_negligible_costs(bw_cost_tib_per_yr)
 
-    # sweep across a) exchange rate, b) onboarding scenario
+    # sweep across a) exchange rate
     exchange_rate_vec = np.linspace(3, 20.0, 100)
-    onboarding_scenario_vec = ['status-quo', 'pessimistic', 'optimistic']
-
+    
     minimum_m_results = []
-    for onboarding_scenario in onboarding_scenario_vec:
+    for cost_scaling in [0.5, 1.0, 2.0]:
         erpt = scenario2erpt[onboarding_scenario]
         for exchange_rate in exchange_rate_vec:
             sector_return_nomult = erpt*exchange_rate
             revenue = deal_income_tib_per_yr
 
-            cost_multiplier = sector_return_nomult*borrowing_cost_pct
+            cost_multiplier = sector_return_nomult*borrowing_cost_pct*cost_scaling
             cost_no_multiplier = (
                 gas_cost_tib_per_yr +
                 power_cost_tib_per_yr +
@@ -52,11 +52,11 @@ def compute_minimum_multiplier(scenario2erpt=None):
                 filp_bd_cost_tib_per_yr +
                 (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.5 +
                 penalty_tib_per_yr
-            )
+            ) * cost_scaling
 
             minimum_m = max(1,(cost_no_multiplier - revenue + sector_return_nomult)/(sector_return_nomult - cost_multiplier))
             minimum_m_results.append({
-                'onboarding_scenario': onboarding_scenario,
+                'cost_scaling': cost_scaling,
                 'exchange_rate': exchange_rate,
                 'minimum_m': minimum_m
             })
@@ -75,6 +75,10 @@ kwargs = {
 }
 
 with st.sidebar:
+    st.selectbox(
+        'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="mm_onboarding_scenario",
+        on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
+    )                
     with st.expander("Revenue Settings", expanded=False):
         st.slider(
             'Deal Income ($/TiB/Yr)', 

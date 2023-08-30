@@ -23,13 +23,15 @@ We examine six different SP strategies for participating in the Filecoin network
 4. V2-ExploitFIL+: The primary difference between `V1` and `V2` is that in `V2`, the SP pays for storing an extra copy and has enough bandwidth to pass any retrieval tests that may be conducted.
 4. V3-ExploitFIL+: The primary difference between `V2` and `V3` is that in `V3`, the SP is subject to slashing costs if they fail to pass integrity tests for FIL+.
 
-Two interactive calculators are provided. Both have slider bars that allow you to explore how different variables, such as the token exchange rate, costs associated with business development, network power onboarding rates, and data preparation costs, affect each SP strategy's net income. 
+Three interactive calculators are provided. All have slider bars that allow you to explore how different variables, such as the token exchange rate, costs associated with business development, network power onboarding rates, and data preparation costs, affect each SP strategy's net income. 
 
 The first calculator (**Cost Breakdown**) graphically breaks down the different costs associated with each SP strategy. It also shows a bar graph of the expected profit, rank ordered by most rational strategy to least rational strategy.
 
 The second calculator (**Rational Strategy**) explores how an individual variable affects the profit of each SP strategy. In this app, the plot's title indicates the variable being explored. All other variables which go into the cost calculation are held constant and set by the slider bar values.
 
-In both calculators, the expected income from block rewards is computed using [MechaFil](https://github.com/protocol/mechafil-jax), a digital twin of the Filecoin economy. 
+The third calculator (**Minimum Multiplier**) explores the necessary minimum QA multiplier needed for SPs who take advantage of FIL+ to have a net income of 0. This is a useful lower bound.
+
+In all calculators, the expected income from block rewards is computed using [MechaFil](https://github.com/protocol/mechafil-jax), a digital twin of the Filecoin economy. 
 
 ### Cost Computation
 In the charts for both calculators, `net_income = revenue - costs`. The following table outlines all of the revenue and cost sources.  While most cost sources are adjustable via slider bar widgets, some are fixed due to their negligible impact on the overall cost.
