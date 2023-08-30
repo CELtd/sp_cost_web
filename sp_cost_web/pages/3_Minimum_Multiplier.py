@@ -18,15 +18,15 @@ def generate_plots(minimum_m_df):
     st.altair_chart(c, use_container_width=True)
 
 def compute_minimum_multiplier(scenario2erpt=None):
-    borrowing_cost_pct = st.session_state['rs_borrow_cost_pct'] / 100.0
-    filp_bd_cost_tib_per_yr = st.session_state['rs_filp_bizdev_cost']
-    deal_income_tib_per_yr = st.session_state['rs_deal_income']
-    data_prep_cost_tib_per_yr = st.session_state['rs_data_prep_cost']
-    penalty_tib_per_yr = st.session_state['rs_cheating_penalty']
+    borrowing_cost_pct = st.session_state['mm_borrow_cost_pct'] / 100.0
+    filp_bd_cost_tib_per_yr = st.session_state['mm_filp_bizdev_cost']
+    deal_income_tib_per_yr = st.session_state['mm_deal_income']
+    data_prep_cost_tib_per_yr = st.session_state['mm_data_prep_cost']
+    penalty_tib_per_yr = st.session_state['mm_cheating_penalty']
 
-    power_cost_tib_per_yr = st.session_state['rs_power_cost']
-    bw_cost_tib_per_yr = st.session_state['rs_bw_cost']
-    staff_cost_tib_per_yr = st.session_state['rs_staff_cost']
+    power_cost_tib_per_yr = st.session_state['mm_power_cost']
+    bw_cost_tib_per_yr = st.session_state['mm_bw_cost']
+    staff_cost_tib_per_yr = st.session_state['mm_staff_cost']
 
     sealing_costs_tib_per_yr, gas_cost_tib_per_yr, _, _ = utils.get_negligible_costs(bw_cost_tib_per_yr)
 
