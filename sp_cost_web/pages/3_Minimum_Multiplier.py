@@ -13,9 +13,11 @@ def generate_plots(minimum_m_df):
     c = alt.Chart(minimum_m_df, title='Minimum Quality Multiplier').mark_line().encode(
         x=alt.X('exchange_rate:Q', title='Exchange Rate [$/FIL]'),
         y=alt.Y('minimum_m:Q', title='Multiplier'),
-        color=alt.Color('cost_scaling:N', scale=alt.Scale(scheme='tableau20')
-                        legend=alt.Legend(title='Cost Scaling', values=['As Configured', '-20% from Configured', '+20% from Configured'])
-                        ),
+        color=alt.Color(
+            'cost_scaling:N', 
+            scale=alt.Scale(scheme='tableau20'),
+            legend=alt.Legend(title='Cost Scaling', values=['As Configured', '-20% from Configured', '+20% from Configured'])
+        ),
     )
     st.altair_chart(c, use_container_width=True)
 
