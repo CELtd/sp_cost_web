@@ -54,7 +54,7 @@ def compute_minimum_multiplier(scenario2erpt=None):
                 penalty_tib_per_yr
             )
 
-            minimum_m = (cost_no_multiplier - revenue + sector_return_nomult)/(sector_return_nomult - cost_multiplier)
+            minimum_m = max(1,(cost_no_multiplier - revenue + sector_return_nomult)/(sector_return_nomult - cost_multiplier))
             minimum_m_results.append({
                 'onboarding_scenario': onboarding_scenario,
                 'exchange_rate': exchange_rate,
