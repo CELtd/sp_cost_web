@@ -29,7 +29,7 @@ The first calculator (**Cost Breakdown**) graphically breaks down the different 
 
 The second calculator (**Rational Strategy**) explores how an individual variable affects the profit of each SP strategy. In this app, the plot's title indicates the variable being explored. All other variables which go into the cost calculation are held constant and set by the slider bar values.
 
-The third calculator (**Minimum Multiplier**) explores the necessary minimum QA multiplier needed for SPs who take advantage of FIL+ to have a net income of 0. This is a useful lower bound.
+The third calculator (**Minimum Multiplier**) explores the necessary minimum QA multiplier needed for SPs who take advantage of FIL+. In this app, slider bars allow you to update revenue and cost figures. The calculator then computes the minimum QA multiplier needed in order to have a net income of 0. This is a useful lower bound to note.
 
 In all calculators, the expected income from block rewards is computed using [MechaFil](https://github.com/protocol/mechafil-jax), a digital twin of the Filecoin economy. 
 
