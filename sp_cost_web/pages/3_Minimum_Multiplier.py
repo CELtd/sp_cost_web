@@ -13,7 +13,7 @@ def generate_plots(minimum_m_df):
     c = alt.Chart(minimum_m_df, title='Minimum Quality Multiplier').mark_line().encode(
         x=alt.X('exchange_rate:Q', title='Exchange Rate [$/FIL]'),
         y=alt.Y('minimum_m:Q', title='Multiplier'),
-        color=alt.Color('onboarding_scenario:N', scale=alt.Scale(scheme='tableau20', title='Onboarding Scenario')),
+        color=alt.Color('onboarding_scenario:N', scale=alt.Scale(scheme='tableau20')),
     )
     st.altair_chart(c, use_container_width=True)
 
