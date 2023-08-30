@@ -35,7 +35,7 @@ def compute_minimum_multiplier(scenario2erpt=None):
     exchange_rate_vec = np.linspace(3, 20.0, 100)
     
     minimum_m_results = []
-    for cost_scaling in [0.5, 1.0, 2.0]:
+    for cost_scaling in [1.0, 2.0, 3.0]:
         erpt = scenario2erpt[onboarding_scenario]
         for exchange_rate in exchange_rate_vec:
             sector_return_nomult = erpt*exchange_rate
