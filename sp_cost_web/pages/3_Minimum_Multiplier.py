@@ -19,7 +19,7 @@ def generate_plots(minimum_m_df):
         The slider bars on the left control the cost of the CC sector, and the multiplier to scale from the CC sector cost to the Deal sector cost.
         Additional variables that can be controlled include the exchange rate, and the expected income from deals per TiB.
 
-        Three lines are shown, for different cost scalings. Each line represents a cost value that is scaled by the indicated value in the legend, in order to quickly
+        Three lines are shown, for different cost scalings. Each line represents a scaling of the configured cost by the indicated value in the legend, in order to quickly
         see how changes in cost affect the required minimum multiplier.
 """
     )
