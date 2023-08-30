@@ -58,7 +58,9 @@ def compute_minimum_multiplier(scenario2erpt=None):
                 penalty_tib_per_yr
             ) * cost_scaling
 
-            minimum_m = max(1,(cost_no_multiplier - revenue + sector_return_nomult)/(sector_return_nomult - cost_multiplier))
+            cc_net_income = sector_return_nomult - (cost_multiplier + cost_no_multiplier)
+            
+            minimum_m = (cc_net_income + cost_no_multiplier - revenue + sector_return_nomult) / (sector_return_nomult - cost_multiplier)
             minimum_m_results.append({
                 'cost_scaling': cost_scaling,
                 'cost_scaling_str': f'{cost_scaling}x',
