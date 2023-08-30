@@ -10,10 +10,10 @@ import pandas as pd
 import utils  # streamlit runs from root directory, so we can import utils directly
 
 def generate_plots(minimum_m_df):
-    c = alt.Chart(minimum_m_df).mark_line().encode(
-        x='exchange_rate:Q',
-        y='minimum_m:Q',
-        color='onboarding_scenario:N',
+    c = alt.Chart(minimum_m_df, title='Minimum Quality Multiplier').mark_line().encode(
+        x=alt.X('exchange_rate:Q', title='Exchange Rate [$/FIL]'),
+        y=alt.Y('minimum_m:Q', title='Multiplier'),
+        color=alt.Color('onboarding_scenario:N', scale=alt.Scale(scheme='tableau20', title='Onboarding Scenario')),
     )
     st.altair_chart(c, use_container_width=True)
 
@@ -75,10 +75,6 @@ kwargs = {
 }
 
 with st.sidebar:
-    st.selectbox(
-        'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="mm_onboarding_scenario",
-        on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
-    )
     with st.expander("Revenue Settings", expanded=False):
         st.slider(
             'Deal Income ($/TiB/Yr)', 
@@ -94,11 +90,6 @@ with st.sidebar:
         st.slider(
             'FIL+ Biz Dev Cost ($/TiB/Yr)', 
             min_value=1.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="mm_filp_bizdev_cost",
-            on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
-        )
-        st.slider(
-            'RD Biz Dev Cost ($/TiB/Yr)', 
-            min_value=1.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="mm_rd_bizdev_cost",
             on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
