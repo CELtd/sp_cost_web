@@ -12,8 +12,7 @@ import utils  # streamlit runs from root directory, so we can import utils direc
 def generate_plots(minimum_m_df):
     c = alt.Chart(minimum_m_df, title='Minimum Quality Multiplier').mark_line().encode(
         x=alt.X('exchange_rate:Q', title='Exchange Rate [$/FIL]'),
-        y=alt.Y('minimum_m:Q', title='Multiplier'),
-        color=alt.Color('cost_scaling:N', scale=alt.Scale(scheme='tableau20'), title='Cost Scaling'),
+        y=alt.Y('minimum_m:Q', title='Multiplier')
     )
     st.altair_chart(c, use_container_width=True)
 
@@ -35,31 +34,30 @@ def compute_minimum_multiplier(scenario2erpt=None):
     exchange_rate_vec = np.linspace(3, 20.0, 100)
     
     minimum_m_results = []
-    for cost_scaling in [1.0, 2.0, 3.0]:
-        erpt = scenario2erpt[onboarding_scenario]
-        for exchange_rate in exchange_rate_vec:
-            sector_return_nomult = erpt*exchange_rate
-            revenue = deal_income_tib_per_yr
+    # for cost_scaling in [1.0, 2.0, 3.0]:
+    erpt = scenario2erpt[onboarding_scenario]
+    for exchange_rate in exchange_rate_vec:
+        sector_return_nomult = erpt*exchange_rate
+        revenue = deal_income_tib_per_yr
 
-            cost_multiplier = sector_return_nomult*borrowing_cost_pct*cost_scaling
-            cost_no_multiplier = (
-                gas_cost_tib_per_yr +
-                power_cost_tib_per_yr +
-                bw_cost_tib_per_yr +
-                staff_cost_tib_per_yr +
-                sealing_costs_tib_per_yr +
-                data_prep_cost_tib_per_yr +
-                filp_bd_cost_tib_per_yr +
-                (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.5 +
-                penalty_tib_per_yr
-            ) * cost_scaling
+        cost_multiplier = sector_return_nomult*borrowing_cost_pct
+        cost_no_multiplier = (
+            gas_cost_tib_per_yr +
+            power_cost_tib_per_yr +
+            bw_cost_tib_per_yr +
+            staff_cost_tib_per_yr +
+            sealing_costs_tib_per_yr +
+            data_prep_cost_tib_per_yr +
+            filp_bd_cost_tib_per_yr +
+            (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.5 +
+            penalty_tib_per_yr
+        )
 
-            minimum_m = max(1,(cost_no_multiplier - revenue + sector_return_nomult)/(sector_return_nomult - cost_multiplier))
-            minimum_m_results.append({
-                'cost_scaling': cost_scaling,
-                'exchange_rate': exchange_rate,
-                'minimum_m': minimum_m
-            })
+        minimum_m = max(1,(cost_no_multiplier - revenue + sector_return_nomult)/(sector_return_nomult - cost_multiplier))
+        minimum_m_results.append({
+            'exchange_rate': exchange_rate,
+            'minimum_m': minimum_m
+        })
     minimum_m_df = pd.DataFrame(minimum_m_results)
     generate_plots(minimum_m_df)
         
