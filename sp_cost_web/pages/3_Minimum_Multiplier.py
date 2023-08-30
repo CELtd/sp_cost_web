@@ -18,7 +18,7 @@ def generate_plots(minimum_m_df):
     st.altair_chart(c, use_container_width=True)
 
 def compute_minimum_multiplier(scenario2erpt=None):
-    onboarding_scenario = st.session_state['mm_onboarding_scenario']
+    onboarding_scenario = st.session_state['mm_onboarding_scenario'].lower()
     borrowing_cost_pct = st.session_state['mm_borrow_cost_pct'] / 100.0
     filp_bd_cost_tib_per_yr = st.session_state['mm_filp_bizdev_cost']
     deal_income_tib_per_yr = st.session_state['mm_deal_income']
