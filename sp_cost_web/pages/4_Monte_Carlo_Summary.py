@@ -60,10 +60,9 @@ def plot_rankings(strategy2ranking, filp_profile):
         x = alt.X('value:Q', 
                 axis=alt.Axis(title='$/TiB/Yr'), 
                 scale=alt.Scale(zero=True),
-                bin=alt.Bin(maxbins=50)),
+                bin=alt.Bin(maxbins=25)),
         y = alt.Y('count():Q', 
-                axis=alt.Axis(title='')),
-        color = alt.Color('variable:N', legend=None, scale=alt.Scale(scheme='dark2'))
+                axis=alt.Axis(title=''))
     ).properties(
         width=130,
         height=130
@@ -77,7 +76,6 @@ def plot_rankings(strategy2ranking, filp_profile):
         columns=4
     ).configure_title(
         fontSize=20,
-        font='Courier',
         anchor='middle',
         color='gray',
         align='left'
