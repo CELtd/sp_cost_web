@@ -45,8 +45,18 @@ def plot_rankings(strategy2ranking, filp_profile):
     st.altair_chart(ch, use_container_width=True)
 
     # plot the distributions
-    alt.data_transformers.disable_max_rows()
-    dist_plot = alt.Chart(data=pd.melt(filp_profile)).mark_bar().encode(
+    filp_profile_renamed = filp_profile.rename(columns={
+        'client_fees': 'Client Fees',
+        'staff': 'Staff',
+        'data_prep': 'Data Prep',
+        'bd': 'BizDev',
+        'extra_copy': 'Extra Copy',
+        'bandwidth': 'Bandwidth',
+        'power_and_colo': 'Power+Colo'
+    })
+        
+    dfm = pd.melt(filp_profile_renamed)
+    ch = alt.Chart(data=dfm).mark_bar().encode(
         x = alt.X('value:Q', 
                 axis=alt.Axis(title='$/TiB/Yr'), 
                 scale=alt.Scale(zero=True),
@@ -57,22 +67,28 @@ def plot_rankings(strategy2ranking, filp_profile):
     ).properties(
         width=130,
         height=130
-    ).facet(
-        column=alt.Column('variable:N', title=None, sort = alt.EncodingSortField(order=None)),
-        align= 'all',
-        columns=2,
+    )
+
+    cch = alt.ConcatChart(
+        concat=[
+        ch.transform_filter(alt.datum.variable == value).properties(title=value)
+        for value in sorted(dfm.variable.unique())
+        ],
+        columns=4
+    ).configure_title(
+        fontSize=20,
+        font='Courier',
+        anchor='middle',
+        color='gray',
+        align='left'
     ).resolve_axis(
         x='independent',
         y='independent'
     ).resolve_scale(
         x='independent', 
         y='independent'
-    ).configure_axis(
-        labelAngle=0,
-        labelFontSize=20,
-        titleFontSize=20
     )
-    st.altair_chart(dist_plot, use_container_width=True)
+    st.altair_chart(cch, use_container_width=True)
 
 def run_mc_sim(scenario2erpt=None):
     n_samples = 1000  # TODO: revisit
