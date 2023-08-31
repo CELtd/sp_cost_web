@@ -23,13 +23,15 @@ We examine six different SP strategies for participating in the Filecoin network
 4. V2-ExploitFIL+: The primary difference between `V1` and `V2` is that in `V2`, the SP pays for storing an extra copy and has enough bandwidth to pass any retrieval tests that may be conducted.
 4. V3-ExploitFIL+: The primary difference between `V2` and `V3` is that in `V3`, the SP is subject to slashing costs if they fail to pass integrity tests for FIL+.
 
-Three interactive calculators are provided. All have slider bars that allow you to explore how different variables, such as the token exchange rate, costs associated with business development, network power onboarding rates, and data preparation costs, affect each SP strategy's net income. 
+Four interactive calculators are provided. All have slider bars that allow you to explore how different variables, such as the token exchange rate, costs associated with business development, network power onboarding rates, and data preparation costs, affect each SP strategy's net income. 
 
 The first calculator (**Cost Breakdown**) graphically breaks down the different costs associated with each SP strategy. It also shows a bar graph of the expected profit, rank ordered by most rational strategy to least rational strategy.
 
 The second calculator (**Rational Strategy**) explores how an individual variable affects the profit of each SP strategy. In this app, the plot's title indicates the variable being explored. All other variables which go into the cost calculation are held constant and set by the slider bar values.
 
 The third calculator (**Minimum Multiplier**) explores the necessary minimum QA multiplier needed for the FIL+ strategy to be more profitable than the CC strategy. This is simulated at a network level, so the variables to control costs are aggregated into a single cost for CC sectors, and a multiplier to scale from the CC sector cost to the Deal sector cost.
+
+The fourth calculator (**Monte Carlo**) runs a Monte-Carlo simulation, by first defining the distributions for each variable, and then sampling from those distributions to compute the expected profit for each SP strategy. After each run, they are ranked by profit, and plotted.
 
 In all calculators, the expected income from block rewards (in units of FIL) is computed using [MechaFil](https://github.com/protocol/mechafil-jax), a digital twin of the Filecoin economy. The exchange rate slider then converts FIL to USD.
 
