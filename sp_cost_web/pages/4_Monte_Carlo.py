@@ -132,7 +132,7 @@ with st.sidebar:
     with st.expander("Distribution Settings", expanded=False):
         st.slider(
             "Client Fees (Mean)", 
-            min_value=1, max_value=40., value=16.0, step=.1, format='%0.02f', key="mc_deal_income",
+            min_value=1.0, max_value=40., value=16.0, step=.1, format='%0.02f', key="mc_deal_income",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
