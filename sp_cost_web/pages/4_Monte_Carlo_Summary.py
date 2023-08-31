@@ -43,8 +43,8 @@ def plot_rankings(strategy2ranking, filp_profile):
     z = pd.melt(x, id_vars=['SP Type'])
     
     ch = alt.Chart(z, width=alt.Step(20), title="Monte-Carlo Ranking").mark_bar().encode(
-        x=alt.X('variable:N', title='Rank', axis=alt.Axis(labelAngle=0),),
-        y=alt.Y('value:Q', title='Percentage of Runs [%]'),
+        x=alt.X('variable:N', title='Strategy Rank', axis=alt.Axis(labelAngle=0),),
+        y=alt.Y('value:Q', title='Percentage [%]'),
         xOffset="SP Type:N",
         color=alt.Color("SP Type:N", scale=alt.Scale(scheme='tableau20'))
     ).configure_axis(
