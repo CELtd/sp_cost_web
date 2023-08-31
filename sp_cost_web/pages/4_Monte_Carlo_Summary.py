@@ -25,7 +25,16 @@ st.set_page_config(
 alt.data_transformers.disable_max_rows()
 
 def plot_rankings(strategy2ranking, filp_profile):
-    # TODO: put some text
+    st.markdown(
+        """
+        ## Monte-Carlo Simulation
+        In this page, a Monte-Carlo simulation (1000 simulations) are run. From each simulation, we rank each SP strategy by profit, and plot the distribution of rankings.
+
+        The distributional assumptions can be modified using the slider bars on the left. Deal Income and Business Development costs are assumed to follow an exponential distribution, whereas the remainder of the costs are assumed to follow a Gamma distribution. 
+        The mean value is controlled by the slider bar, and for costs which follow a Gamma distribution, the rate parameter can also be controlled. 
+"""
+    )
+
     rank_cols = [1,2,3,4,5,6]
     x = pd.DataFrame(strategy2ranking).T[rank_cols].fillna(1)
     x['SP Type'] = x.index
@@ -100,23 +109,25 @@ def run_mc_sim(scenario2erpt=None):
     cc_multiplier = st.session_state['mc_cc_multiplier']
 
     client_fees_lambda = 1.0/st.session_state['mc_deal_income']
-    staff_fees_alpha = st.session_state['mc_staff']
-    data_prep_alpha = st.session_state['mc_data_prep']
     bizdev_lambda = 1.0/st.session_state['mc_bizdev']
-    extra_copy_alpha = st.session_state['mc_extracopy']
-    bandwidth_alpha = st.session_state['mc_bw']
-    power_alpha = st.session_state['mc_power']
-    gamma_alpha = st.session_state['gamma_alpha']
+    
+    gamma_beta = st.session_state['gamma_beta']
+    staff_fees_alpha = st.session_state['mc_staff'] / gamma_beta
+    data_prep_alpha = st.session_state['mc_data_prep'] / gamma_beta
+    extra_copy_alpha = st.session_state['mc_extracopy'] / gamma_beta
+    bandwidth_alpha = st.session_state['mc_bw'] / gamma_beta
+    power_alpha = st.session_state['mc_power'] / gamma_beta
+    
 
     seed = pyrandom.randint(0, 2**24)
 
     client_fees = sample('x', dist.Exponential(client_fees_lambda).expand([n_samples]), rng_key=random.PRNGKey(seed))
-    staff = sample('x', dist.Gamma(staff_fees_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+1))
-    data_prep = sample('x', dist.Gamma(data_prep_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+2))
+    staff = sample('x', dist.Gamma(staff_fees_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+1))
+    data_prep = sample('x', dist.Gamma(data_prep_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+2))
     bd = sample('x', dist.Exponential(bizdev_lambda).expand([n_samples]), rng_key=random.PRNGKey(seed+3))
-    extra_copy = sample('x', dist.Gamma(extra_copy_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+4))
-    bandwidth = sample('x', dist.Gamma(bandwidth_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+5))
-    power_and_colo = sample('x', dist.Gamma(power_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+6))
+    extra_copy = sample('x', dist.Gamma(extra_copy_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+4))
+    bandwidth = sample('x', dist.Gamma(bandwidth_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+5))
+    power_and_colo = sample('x', dist.Gamma(power_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+6))
     
     filp_profile = pd.DataFrame({
         'client_fees': client_fees,
@@ -185,43 +196,43 @@ with st.sidebar:
 
     with st.expander("Distribution Settings", expanded=False):
         st.slider(
-            "Client Fees (Mean)", 
+            "Mean Client Fees", 
             min_value=1.0, max_value=40., value=16.0, step=.1, format='%0.02f', key="mc_deal_income",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            "Staff Fees (alpha)", 
+            "Mean Staff Fees", 
             min_value=1.0, max_value=50., value=16.0, step=.1, format='%0.02f', key="mc_staff",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            "Data Prep (alpha)", 
+            "Mean Data Prep", 
             min_value=0.1, max_value=50., value=2.0, step=.1, format='%0.02f', key="mc_data_prep",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            "Biz Dev (Mean)", 
+            "Mean Biz Dev", 
             min_value=1.0, max_value=50.0, value=16.0, step=.1, format='%0.02f', key="mc_bizdev",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            "Extra Copy (alpha)", 
+            "Mean Extra Copy", 
             min_value=0.1, max_value=50., value=14.0, step=.1, format='%0.02f', key="mc_extracopy",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            "Bandwidth (alpha)", 
+            "Mean Bandwidth", 
             min_value=0.1, max_value=50., value=12.0, step=.1, format='%0.02f', key="mc_bw",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            "Power+COLO (alpha)", 
+            "Mean Power+COLO", 
             min_value=0.1, max_value=50., value=12.0, step=.1, format='%0.02f', key="mc_power",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Gamma Rate [all] (Beta)", 
-            min_value=0.1, max_value=10., value=2.0, step=.1, format='%0.02f', key="gamma_alpha",
+            min_value=0.1, max_value=10., value=2.0, step=.1, format='%0.02f', key="gamma_beta",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
     
