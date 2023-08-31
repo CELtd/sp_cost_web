@@ -76,10 +76,6 @@ def plot_rankings(strategy2ranking, filp_profile):
     ).properties(
         width=200,
         height=200
-    ).configure_axis(
-        labelAngle=0,
-        labelFontSize=20,
-        titleFontSize=20
     )
 
     cch = alt.ConcatChart(
@@ -99,6 +95,10 @@ def plot_rankings(strategy2ranking, filp_profile):
     ).resolve_scale(
         x='independent', 
         y='independent'
+    ).configure_axis(
+        labelAngle=0,
+        labelFontSize=20,
+        titleFontSize=20
     )
     st.altair_chart(cch, use_container_width=True)
 
