@@ -101,11 +101,6 @@ def run_mc_sim(scenario2erpt=None):
     plot_rankings(strategy2ranking)
     
 
-st.set_page_config(
-    page_title="Monte Carlo Simulation", 
-    #page_icon=":brain:",
-    layout="wide",
-)
 
 current_date = date.today() - timedelta(days=3)
 mo_start = min(current_date.month - 1 % 12, 1)
@@ -116,6 +111,12 @@ scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)  # sh
 kwargs = {
     'scenario2erpt':scenario2erpt
 }
+
+st.set_page_config(
+    page_title="Monte Carlo Simulation", 
+    #page_icon=":brain:",
+    layout="wide",
+)
 
 with st.sidebar:
     st.slider(
