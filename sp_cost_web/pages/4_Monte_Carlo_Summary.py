@@ -63,7 +63,7 @@ def plot_rankings(strategy2ranking, filp_profile):
                 bin=alt.Bin(maxbins=50)),
         y = alt.Y('count():Q', 
                 axis=alt.Axis(title='')),
-        color = alt.Color('variable:N', legend=None)
+        color = alt.Color('variable:N', legend=None, scale=alt.Scale(scheme='tableau20'))
     ).properties(
         width=130,
         height=130
