@@ -40,9 +40,9 @@ def run_mc_sim(scenario2erpt=None):
     exchange_rate = st.session_state['mc_filprice_slider']
     onboarding_scenario = st.session_state['mc_onboarding_scenario'].lower()
     
-    filp_multiplier = st.session_state['filp_multiplier']
-    rd_multiplier = st.session_state['rd_multiplier']
-    cc_multiplier = st.session_state['cc_multiplier']
+    filp_multiplier = st.session_state['mc_filp_multiplier']
+    rd_multiplier = st.session_state['mc_rd_multiplier']
+    cc_multiplier = st.session_state['mc_cc_multiplier']
 
     client_fees_lambda = 1.0/st.session_state['mc_deal_income']
     staff_fees_alpha = st.session_state['mc_staff']
@@ -77,7 +77,8 @@ def run_mc_sim(scenario2erpt=None):
 
     strategy2ranking = {}
     for _, row in filp_profile.iterrows():
-        cost_df = utils.compute_costs(scenario2erpt=scenario2erpt, 
+        cost_df = utils.compute_costs(
+            scenario2erpt=scenario2erpt, 
             filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
             onboarding_scenario=onboarding_scenario,
             exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost,
@@ -176,15 +177,15 @@ with st.sidebar:
     
     with st.expander("Multipliers", expanded=False):
         st.slider(
-            'CC', min_value=1, max_value=20, value=1, step=1, key="cc_multiplier",
+            'CC', min_value=1, max_value=20, value=1, step=1, key="mc_cc_multiplier",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'RD', min_value=1, max_value=20, value=1, step=1, key="rd_multiplier",
+            'RD', min_value=1, max_value=20, value=1, step=1, key="mc_rd_multiplier",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            'FIL+', min_value=1, max_value=20, value=10, step=1, key="filp_multiplier",
+            'FIL+', min_value=1, max_value=20, value=10, step=1, key="mc_filp_multiplier",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
     st.button("Compute!", on_click=run_mc_sim, kwargs=kwargs, key="forecast_button")
