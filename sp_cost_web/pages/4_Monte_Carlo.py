@@ -13,7 +13,7 @@ from jax import random
 import matplotlib.pyplot as plt
 import pandas as pd
 
-import random
+import random as pyrandom
 
 import utils  # streamlit runs from root directory, so we can import utils directly
 
@@ -53,7 +53,7 @@ def run_mc_sim(scenario2erpt=None):
     power_alpha = st.session_state['mc_power']
     gamma_alpha = st.session_state['gamma_alpha']
 
-    seed = random.randint(0, 2**24)
+    seed = pyrandom.randint(0, 2**24)
 
     client_fees = sample('x', dist.Exponential(client_fees_lambda).expand([n_samples]), rng_key=random.PRNGKey(seed))
     staff = sample('x', dist.Gamma(staff_fees_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+1))
