@@ -9,6 +9,12 @@ import pandas as pd
 
 import utils  # streamlit runs from root directory, so we can import utils directly
 
+st.set_page_config(
+    page_title="Minimum Multiplier", 
+    page_icon=":times:",
+    layout="wide",
+)
+
 def generate_plots(minimum_m_df):
     st.markdown(
         """
@@ -76,12 +82,6 @@ scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)  # sh
 kwargs = {
     'scenario2erpt':scenario2erpt
 }
-
-# st.set_page_config(
-#     page_title="Minimum Multiplier", 
-#     page_icon=":times:",
-#     layout="wide",
-# )
 
 with st.sidebar:
     st.selectbox(

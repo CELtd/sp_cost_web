@@ -17,6 +17,12 @@ import random as pyrandom
 
 import utils  # streamlit runs from root directory, so we can import utils directly
 
+st.set_page_config(
+    page_title="Monte Carlo Simulation", 
+    #page_icon=":brain:",
+    layout="wide",
+)
+
 def plot_rankings(strategy2ranking):
     x = pd.DataFrame(strategy2ranking).T[[1,2,3,4,5,6]].fillna(1)
     x['SP Type'] = x.index
@@ -111,12 +117,6 @@ scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)  # sh
 kwargs = {
     'scenario2erpt':scenario2erpt
 }
-
-st.set_page_config(
-    page_title="Monte Carlo Simulation", 
-    #page_icon=":brain:",
-    layout="wide",
-)
 
 with st.sidebar:
     st.slider(

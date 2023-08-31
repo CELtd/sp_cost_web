@@ -7,8 +7,6 @@ from typing import Union
 
 from datetime import date, timedelta
 
-import time
-
 import numpy as np
 import pandas as pd
 import jax.numpy as jnp
@@ -22,6 +20,12 @@ import mechafil_jax.date_utils as du
 import scenario_generator.utils as u
 
 import utils  # streamlit runs from root directory, so we can import utils directly
+
+st.set_page_config(
+    page_title="Cost Breakdown",
+    page_icon="🚀",  # TODO: can update this to the FIL logo
+    layout="wide",
+)
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -131,12 +135,6 @@ def plot_costs(df):
     formatted_df = df.T.style.format(format_mapping)
     st.markdown("###### Cost Breakdown Table")
     st.write(formatted_df)
-    
-st.set_page_config(
-    page_title="Cost Breakdown",
-    page_icon="🚀",  # TODO: can update this to the FIL logo
-    layout="wide",
-)
 
 current_date = date.today() - timedelta(days=3)
 mo_start = min(current_date.month - 1 % 12, 1)
