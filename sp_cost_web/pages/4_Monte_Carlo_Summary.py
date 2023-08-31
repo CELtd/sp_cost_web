@@ -26,15 +26,16 @@ alt.data_transformers.disable_max_rows()
 
 def plot_rankings(strategy2ranking, filp_profile):
     # TODO: put some text
-
-
-    x = pd.DataFrame(strategy2ranking).T[[1,2,3,4,5,6]].fillna(1)
+    rank_cols = [1,2,3,4,5,6]
+    x = pd.DataFrame(strategy2ranking).T[rank_cols].fillna(1)
     x['SP Type'] = x.index
     x.index = np.arange(len(x))
+    x[rank_cols] = x[rank_cols]/x[rank_cols].sum()*100
     z = pd.melt(x, id_vars=['SP Type'])
+    
     ch = alt.Chart(z, width=alt.Step(20), title="Monte-Carlo Ranking").mark_bar().encode(
         x=alt.X('variable:N', title='Rank', axis=alt.Axis(labelAngle=0),),
-        y=alt.Y('value:Q', title='Counts'),
+        y=alt.Y('value:Q', title='Probability'),
         xOffset="SP Type:N",
         color=alt.Color("SP Type:N", scale=alt.Scale(scheme='tableau20'))
     ).configure_axis(
