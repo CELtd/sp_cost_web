@@ -22,8 +22,12 @@ st.set_page_config(
     #page_icon=":brain:",
     layout="wide",
 )
+alt.data_transformers.disable_max_rows()
 
-def plot_rankings(strategy2ranking):
+def plot_rankings(strategy2ranking, filp_profile):
+    # TODO: put some text
+
+    
     x = pd.DataFrame(strategy2ranking).T[[1,2,3,4,5,6]].fillna(1)
     x['SP Type'] = x.index
     x.index = np.arange(len(x))
@@ -39,6 +43,26 @@ def plot_rankings(strategy2ranking):
         titleFontSize=20
     )
     st.altair_chart(ch, use_container_width=True)
+
+    # plot the distributions
+    dist_plot = alt.Chart(data=pd.melt(filp_profile)).mark_bar().encode(
+        x = alt.X('value:Q', 
+                axis=alt.Axis(title=''), 
+                scale=alt.Scale(zero=False),
+                bin=alt.Bin(maxbins=50)),
+        y = alt.Y('count():Q', 
+                axis=alt.Axis(title='')),
+        color = alt.Color('variable:N', legend=None)
+    ).facet(
+        alt.Column('variable:N'),
+        align= 'all',
+        columns=3
+    ).configure_axis(
+        labelAngle=0,
+        labelFontSize=20,
+        titleFontSize=20
+    )
+    st.altair_chart(dist_plot, use_container_width=True)
 
 def run_mc_sim(scenario2erpt=None):
     n_samples = 1000  # TODO: revisit
@@ -104,7 +128,7 @@ def run_mc_sim(scenario2erpt=None):
                 strategy2ranking[sp_type] = defaultdict(int)
             strategy2ranking[sp_type][rank] += 1
 
-    plot_rankings(strategy2ranking)
+    plot_rankings(strategy2ranking, filp_profile)
     
 
 
