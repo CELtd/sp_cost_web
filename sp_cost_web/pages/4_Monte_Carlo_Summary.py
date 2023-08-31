@@ -35,7 +35,7 @@ def plot_rankings(strategy2ranking, filp_profile):
     
     ch = alt.Chart(z, width=alt.Step(20), title="Monte-Carlo Ranking").mark_bar().encode(
         x=alt.X('variable:N', title='Rank', axis=alt.Axis(labelAngle=0),),
-        y=alt.Y('value:Q', title='Probability'),
+        y=alt.Y('value:Q', title='Percentage of Runs [%]'),
         xOffset="SP Type:N",
         color=alt.Color("SP Type:N", scale=alt.Scale(scheme='tableau20'))
     ).configure_axis(
