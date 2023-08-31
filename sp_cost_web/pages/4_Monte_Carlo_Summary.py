@@ -45,8 +45,8 @@ def plot_rankings(strategy2ranking, filp_profile):
     st.altair_chart(ch, use_container_width=True)
 
     # plot the distributions
-    dist_plot = alt.data_transformers.disable_max_rows()
-    alt.Chart(data=pd.melt(filp_profile)).mark_bar().encode(
+    alt.data_transformers.disable_max_rows()
+    dist_plot = alt.Chart(data=pd.melt(filp_profile)).mark_bar().encode(
         x = alt.X('value:Q', 
                 axis=alt.Axis(title='$/TiB/Yr'), 
                 scale=alt.Scale(zero=True),
