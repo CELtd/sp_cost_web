@@ -179,3 +179,4 @@ with st.sidebar:
             'FIL+', min_value=1, max_value=20, value=10, step=1, key="filp_multiplier",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
+    st.button("Compute!", on_click=run_mc_sim, kwargs=kwargs, key="forecast_button")
