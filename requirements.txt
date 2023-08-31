@@ -4,6 +4,7 @@ altair
 watchdog
 jax
 jaxlib
+numpyro
 numpy
 scipy
 matplotlib

@@ -77,6 +77,12 @@ kwargs = {
     'scenario2erpt':scenario2erpt
 }
 
+st.set_page_config(
+    page_title="Minimum Multiplier", 
+    page_icon=":times:",
+    layout="wide",
+)
+
 with st.sidebar:
     st.selectbox(
         'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="mm_onboarding_scenario",
