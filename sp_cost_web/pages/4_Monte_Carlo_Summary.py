@@ -112,11 +112,11 @@ def run_mc_sim(scenario2erpt=None):
     bizdev_lambda = 1.0/st.session_state['mc_bizdev']
     
     gamma_beta = st.session_state['gamma_beta']
-    staff_fees_alpha = st.session_state['mc_staff'] / gamma_beta
-    data_prep_alpha = st.session_state['mc_data_prep'] / gamma_beta
-    extra_copy_alpha = st.session_state['mc_extracopy'] / gamma_beta
-    bandwidth_alpha = st.session_state['mc_bw'] / gamma_beta
-    power_alpha = st.session_state['mc_power'] / gamma_beta
+    staff_fees_alpha = st.session_state['mc_staff'] * gamma_beta
+    data_prep_alpha = st.session_state['mc_data_prep'] * gamma_beta
+    extra_copy_alpha = st.session_state['mc_extracopy'] * gamma_beta
+    bandwidth_alpha = st.session_state['mc_bw'] * gamma_beta
+    power_alpha = st.session_state['mc_power'] * gamma_beta
     
 
     seed = pyrandom.randint(0, 2**24)
