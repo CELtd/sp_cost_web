@@ -42,10 +42,10 @@ def run_mc_sim(scenario2erpt=None):
     rd_multiplier = st.session_state['rd_multiplier']
     cc_multiplier = st.session_state['cc_multiplier']
 
-    client_fees_lambda = st.session_state['mc_deal_income']
+    client_fees_lambda = 1.0/st.session_state['mc_deal_income']
     staff_fees_alpha = st.session_state['mc_staff']
     data_prep_alpha = st.session_state['mc_data_prep']
-    bizdev_lambda = st.session_state['mc_bizdev']
+    bizdev_lambda = 1.0/st.session_state['mc_bizdev']
     extra_copy_alpha = st.session_state['mc_extracopy']
     bandwidth_alpha = st.session_state['mc_bw']
     power_alpha = st.session_state['mc_power']
@@ -131,43 +131,43 @@ with st.sidebar:
 
     with st.expander("Distribution Settings", expanded=False):
         st.slider(
-            "Client Fees (lambda)", 
-            min_value=0.01, max_value=1., value=1.0/16.0, step=.01, format='%0.02f', key="mc_deal_income",
+            "Client Fees (Mean)", 
+            min_value=1, max_value=40., value=16.0, step=.1, format='%0.02f', key="mc_deal_income",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Staff Fees (alpha)", 
-            min_value=1.0, max_value=50., value=16.0, step=.01, format='%0.02f', key="mc_staff",
+            min_value=1.0, max_value=50., value=16.0, step=.1, format='%0.02f', key="mc_staff",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Data Prep (alpha)", 
-            min_value=0.01, max_value=50., value=2.0, step=.01, format='%0.02f', key="mc_data_prep",
+            min_value=0.1, max_value=50., value=2.0, step=.1, format='%0.02f', key="mc_data_prep",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
-            "Biz Dev (lambda)", 
-            min_value=0.01, max_value=1., value=1.0/16.0, step=.01, format='%0.02f', key="mc_bizdev",
+            "Biz Dev (Mean)", 
+            min_value=1.0, max_value=50.0, value=16.0, step=.1, format='%0.02f', key="mc_bizdev",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Extra Copy (alpha)", 
-            min_value=0.01, max_value=50., value=14.0, step=.01, format='%0.02f', key="mc_extracopy",
+            min_value=0.1, max_value=50., value=14.0, step=.1, format='%0.02f', key="mc_extracopy",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Bandwidth (alpha)", 
-            min_value=0.01, max_value=50., value=12.0, step=.01, format='%0.02f', key="mc_bw",
+            min_value=0.1, max_value=50., value=12.0, step=.1, format='%0.02f', key="mc_bw",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Power+COLO (alpha)", 
-            min_value=0.01, max_value=50., value=12.0, step=.01, format='%0.02f', key="mc_power",
+            min_value=0.1, max_value=50., value=12.0, step=.1, format='%0.02f', key="mc_power",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Gamma Rate [all] (Beta)", 
-            min_value=0.01, max_value=10., value=2.0, step=.01, format='%0.02f', key="gamma_alpha",
+            min_value=0.1, max_value=10., value=2.0, step=.1, format='%0.02f', key="gamma_alpha",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
     
