@@ -73,9 +73,6 @@ def plot_rankings(strategy2ranking, filp_profile):
                 bin=alt.Bin(maxbins=25)),
         y = alt.Y('count():Q', 
                 axis=alt.Axis(title=''))
-    ).properties(
-        width=130,
-        height=130
     )
 
     cch = alt.ConcatChart(
