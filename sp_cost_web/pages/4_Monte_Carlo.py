@@ -13,6 +13,8 @@ from jax import random
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import random
+
 import utils  # streamlit runs from root directory, so we can import utils directly
 
 def plot_rankings(strategy2ranking):
@@ -33,7 +35,7 @@ def plot_rankings(strategy2ranking):
     st.altair_chart(ch, use_container_width=True)
 
 def run_mc_sim(scenario2erpt=None):
-    n_samples = 500  # TODO: revisit
+    n_samples = 1000  # TODO: revisit
 
     exchange_rate = st.session_state['mc_filprice_slider']
     onboarding_scenario = st.session_state['mc_onboarding_scenario'].lower()
@@ -51,14 +53,15 @@ def run_mc_sim(scenario2erpt=None):
     power_alpha = st.session_state['mc_power']
     gamma_alpha = st.session_state['gamma_alpha']
 
-    client_fees = sample('x', dist.Exponential(client_fees_lambda).expand([n_samples]), rng_key=random.PRNGKey(0))
-    staff = sample('x', dist.Gamma(staff_fees_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(0))
-    data_prep = sample('x', dist.Gamma(data_prep_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(1))
-    bd = sample('x', dist.Exponential(bizdev_lambda).expand([n_samples]), rng_key=random.PRNGKey(1))
-    extra_copy = sample('x', dist.Gamma(extra_copy_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(0))
-    bandwidth = sample('x', dist.Gamma(bandwidth_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(0))
-    power_and_colo = sample('x', dist.Gamma(power_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(1))
+    seed = random.randint(0, 2**24)
 
+    client_fees = sample('x', dist.Exponential(client_fees_lambda).expand([n_samples]), rng_key=random.PRNGKey(seed))
+    staff = sample('x', dist.Gamma(staff_fees_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+1))
+    data_prep = sample('x', dist.Gamma(data_prep_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+2))
+    bd = sample('x', dist.Exponential(bizdev_lambda).expand([n_samples]), rng_key=random.PRNGKey(seed+3))
+    extra_copy = sample('x', dist.Gamma(extra_copy_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+4))
+    bandwidth = sample('x', dist.Gamma(bandwidth_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+5))
+    power_and_colo = sample('x', dist.Gamma(power_alpha,gamma_alpha).expand([n_samples]), rng_key=random.PRNGKey(seed+6))
     
     filp_profile = pd.DataFrame({
         'client_fees': client_fees,
