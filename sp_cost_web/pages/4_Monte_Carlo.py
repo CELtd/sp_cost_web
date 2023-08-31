@@ -162,7 +162,7 @@ with st.sidebar:
         )
         st.slider(
             "Gamma Rate [all] (\Beta)", 
-            min_value=0.01, max_value=10., value=2, step=.01, format='%0.02f', key="gamma_alpha",
+            min_value=0.01, max_value=10., value=2.0, step=.01, format='%0.02f', key="gamma_alpha",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
     
