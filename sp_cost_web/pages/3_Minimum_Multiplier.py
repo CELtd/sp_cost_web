@@ -102,7 +102,7 @@ def compute_minimum_multiplier(scenario2erpt=None):
             # deal_profit = deal_income + m*erpt*exchange_rate - deal_cost_multiplier*cc_cost_full
             # deal_income + m*erpt*exchange_rate - deal_cost_multiplier*cc_cost_full = erpt_exchange_rate-cc_cost_full
             # => m = (cc_profit - deal_income + deal_cost_multiplier*cc_cost_full)/(erpt*exchange_rate)
-            minimum_m = (cc_profit - deal_income + deal_cost_multiplier*cc_cost_full)/(erpt*exchange_rate)
+            minimum_m = (cc_profit - deal_income + deal_cost_multiplier*cc_cost_full)/(erpt*exchange_rate_cfg)
 
             minimum_m_results.append({
                 'cost_scaling': cost_scaling,
