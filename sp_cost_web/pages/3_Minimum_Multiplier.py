@@ -49,7 +49,7 @@ def generate_plots(minimum_m_sweep_exchangerate_df, minimum_m_sweep_dealincome_d
     )
     st.altair_chart(c1, use_container_width=True)
 
-    c2 = alt.Chart(minimum_m_sweep_exchangerate_df, title='Perspective 2 - Minimum Quality Multiplier').mark_line().encode(
+    c2 = alt.Chart(minimum_m_sweep_dealincome_df, title='Perspective 2 - Minimum Quality Multiplier').mark_line().encode(
         x=alt.X('deal_income:Q', title='Deal Income [$/TiB/Yr]'),
         y=alt.Y('minimum_m:Q', title='Multiplier'),
         color=alt.Color(
