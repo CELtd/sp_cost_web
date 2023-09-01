@@ -34,7 +34,7 @@ def generate_plots(minimum_m_sweep_exchangerate_df, minimum_m_sweep_dealincome_d
         - Deal Sector Cost Multiplier
         
         The slider bars on the left control these variables. Three lines are shown, for different cost scalings. Each line represents a scaling of the configured cost by the indicated value in the legend, in order to quickly
-        see how changes in cost affect the required minimum multiplier.
+        see how changes in assumptions change the required minimum multiplier.
 """
     )
 
