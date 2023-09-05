@@ -3,6 +3,7 @@ import streamlit as st
 st.set_page_config(
     page_title="Introduction",
     page_icon="👋",
+    layout="wide",
 )
 
 st.markdown("[![CryptoEconLab](./app/static/cover.png)](https://cryptoeconlab.io)")
