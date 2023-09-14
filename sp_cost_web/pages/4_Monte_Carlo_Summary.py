@@ -62,7 +62,8 @@ def plot_rankings(strategy2ranking, filp_profile):
         'bd': 'BizDev',
         'extra_copy': 'Extra Copy',
         'bandwidth': 'Bandwidth',
-        'power_and_colo': 'Power+Colo'
+        'power_and_colo': 'Power+Colo',
+        'slashing': 'FIL+ Penalty Fees'
     })
         
     dfm = pd.melt(filp_profile_renamed)
@@ -121,7 +122,7 @@ def run_mc_sim(scenario2erpt=None):
     extra_copy_alpha = st.session_state['mc_extracopy'] * gamma_beta
     bandwidth_alpha = st.session_state['mc_bw'] * gamma_beta
     power_alpha = st.session_state['mc_power'] * gamma_beta
-    
+    slashing_alpha = st.session_state['mc_slashing'] * gamma_beta
 
     seed = pyrandom.randint(0, 2**24)
 
@@ -132,7 +133,8 @@ def run_mc_sim(scenario2erpt=None):
     extra_copy = sample('x', dist.Gamma(extra_copy_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+4))
     bandwidth = sample('x', dist.Gamma(bandwidth_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+5))
     power_and_colo = sample('x', dist.Gamma(power_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+6))
-    
+    slashing = sample('x', dist.Gamma(slashing_alpha,gamma_beta).expand([n_samples]), rng_key=random.PRNGKey(seed+7))
+
     filp_profile = pd.DataFrame({
         'client_fees': client_fees,
         'staff': staff,
@@ -140,7 +142,8 @@ def run_mc_sim(scenario2erpt=None):
         'bd': bd,
         'extra_copy': extra_copy,
         'bandwidth': bandwidth,
-        'power_and_colo': power_and_colo   
+        'power_and_colo': power_and_colo,
+        'slashing': slashing
     })
 
     borrowing_cost = st.session_state['mc_borrow_cost_pct']/100.0
@@ -154,7 +157,8 @@ def run_mc_sim(scenario2erpt=None):
             exchange_rate=exchange_rate, borrowing_cost_pct=borrowing_cost,
             filp_bd_cost_tib_per_yr=row['bd'], rd_bd_cost_tib_per_yr=row['bd']*0.5,
             deal_income_tib_per_yr=row['client_fees'],
-            data_prep_cost_tib_per_yr=row['data_prep'], penalty_tib_per_yr=0.0,
+            data_prep_cost_tib_per_yr=row['data_prep'], 
+            penalty_tib_per_yr=row['slashing'],
             power_cost_tib_per_yr=row['power_and_colo'], 
             bandwidth_10gbps_tib_per_yr=row['bandwidth'], 
             staff_cost_tib_per_yr=row['staff']
@@ -235,10 +239,16 @@ with st.sidebar:
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
         st.slider(
+            "Mean FIL+ Slashing Fees",
+            min_value=0.1, max_value=50., value=0.1, step=.1, format='%0.02f', key="mc_slashing",
+            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
             "Gamma Rate [all] (Beta)", 
             min_value=0.1, max_value=10., value=2.0, step=.1, format='%0.02f', key="gamma_beta",
             on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
         )
+        
     
     with st.expander("Multipliers", expanded=False):
         st.slider(
