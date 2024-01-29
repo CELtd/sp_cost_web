@@ -180,7 +180,7 @@ def generate_rankings(scenario2erpt=None):
     generate_plots(borrowing_cost_plot_df, deal_income_plot_df, data_prepcost_plot_df, bizdev_cost_plot_df)
 
 current_date = date.today() - timedelta(days=3)
-mo_start = min(current_date.month - 1 % 12, 1)
+mo_start = max(current_date.month - 1 % 12, 1)
 start_date = date(current_date.year, mo_start, 1)
 forecast_length_days=365*3
 end_date = current_date + timedelta(days=forecast_length_days)
