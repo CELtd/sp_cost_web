@@ -50,6 +50,8 @@ a particular cost or revenue source for the category specified by the column. De
 on the cell. \n\n Feel free to use units that are easiest for you. Please aim to provide a description for each entry,
 similar to the default entries. For example: Rather than entering a value of \$16/TiB/Yr, it is preferable to enter 
 "Deal Income (\$16/TiB/Yr)", and so on. The default text descriptions and categories are provided as a guide.
+\n\n
+If you decide to provide aggregated costs and revenues, please indicate so with a description such as: Total($24/TiB/Yr). \n\n
  \n\n
 """)
 edited_df = st.data_editor(l3_df, use_container_width=True)
