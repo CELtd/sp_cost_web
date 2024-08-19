@@ -5,7 +5,7 @@ watchdog
 jax
 jaxlib
 numpyro
-numpy
+numpy==1.26.4
 scipy
 matplotlib
 mechafil-jax @ git+https://github.com/protocol/mechafil-jax.git
