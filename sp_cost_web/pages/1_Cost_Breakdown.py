@@ -32,7 +32,7 @@ def local_css(file_name):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 # local_css("debug.css")
 
-def compute_costs(scenario2erpt=None):
+def compute_costs():
     filp_multiplier = st.session_state['filp_multiplier']
     rd_multiplier = st.session_state['rd_multiplier']
     cc_multiplier = st.session_state['cc_multiplier']
@@ -51,6 +51,15 @@ def compute_costs(scenario2erpt=None):
     bw_cost_tib_per_yr = st.session_state['bw_cost']
     staff_cost_tib_per_yr = st.session_state['staff_cost']
 
+    sealing_cost = st.session_state['sealing_cost']
+    psd_gas_cost = st.session_state['psd_gas_cost']
+    cc_gas_cost = st.session_state['cc_gas_cost']
+    extra_copy_cost = st.session_state['extra_copy_cost']
+
+    if 'scenario2erpt' not in st.session_state:
+        run_simulation()
+    scenario2erpt = st.session_state['scenario2erpt']
+
     df = utils.compute_costs(
         scenario2erpt=scenario2erpt,
         filp_multiplier=filp_multiplier, rd_multiplier=rd_multiplier, cc_multiplier=cc_multiplier,
@@ -60,7 +69,9 @@ def compute_costs(scenario2erpt=None):
         deal_income_tib_per_yr=deal_income_tib_per_yr,
         data_prep_cost_tib_per_yr=data_prep_cost_tib_per_yr, penalty_tib_per_yr=penalty_tib_per_yr,
         power_cost_tib_per_yr=power_cost_tib_per_yr, bandwidth_10gbps_tib_per_yr=bw_cost_tib_per_yr,
-        staff_cost_tib_per_yr=staff_cost_tib_per_yr
+        staff_cost_tib_per_yr=staff_cost_tib_per_yr, sealing_costs_tib_per_yr=sealing_cost,
+        gas_cost_tib_per_yr=psd_gas_cost, gas_cost_without_psd_tib_per_yr=cc_gas_cost,
+        extra_copy_cost_tib_per_yr=extra_copy_cost
     )
     plot_costs(df)
 
@@ -87,13 +98,7 @@ def plot_costs(df):
                  'bd_cost', 'extra_copy_cost', 'cheating_cost']]
     dff_positive = pd.melt(df_positive, id_vars=['SP Type'])
     dff_negative = pd.melt(df_negative, id_vars=['SP Type'])
-    # dff = pd.melt(df_copy, id_vars=['SP Type'])
-    # angelo_chart = alt.Chart(dff).mark_bar().encode(
-    #         x=alt.X("value:Q", title=""),
-    #         y=alt.Y("SP Type:N", title=""),
-    #         color=alt.Color("variable", type="nominal", title=""),
-    #         order=alt.Order("variable", sort="descending"),
-    #     )
+    
     chart1 = (
     alt.Chart(dff_positive, title="Cost Breakdown").mark_bar().encode(
             x=alt.X("value:Q", title="($/TiB/Yr)"),
@@ -141,83 +146,120 @@ mo_start = max(current_date.month - 1 % 12, 1)
 start_date = date(current_date.year, mo_start, 1)
 forecast_length_days=365*3
 end_date = current_date + timedelta(days=forecast_length_days)
-scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)
-compute_costs_kwargs = {
-    'scenario2erpt':scenario2erpt
-}
+offline_info = utils.get_offline_data(start_date, current_date, end_date)  # cached, should be quick
+scenario2erpt = utils.run_scenario_simulations(offline_info, lock_target=0.3)
+st.session_state['scenario2erpt'] = scenario2erpt
+# compute_costs_kwargs = {
+#     'scenario2erpt':scenario2erpt
+# }
+# def run_simulation():
+#     lock_target = 0.3
+#     offline_info = utils.get_offline_data(start_date, current_date, end_date)  # cached, should be quick
+#     scenario2erpt = utils.run_scenario_simulations(offline_info, lock_target=lock_target)
+#     # compute_costs_kwargs = {
+#     #     'scenario2erpt':scenario2erpt
+#     # }
+#     st.session_state['scenario2erpt'] = scenario2erpt
+#     compute_costs()
+
+# run_simulation()
 
 with st.sidebar:
     st.slider(
         "FIL Exchange Rate ($/FIL)", 
         min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="filprice_slider",
-        on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+        on_change=compute_costs, disabled=False, label_visibility="visible"
     )
     st.selectbox(
         'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="onboarding_scenario",
-        on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+        on_change=compute_costs, disabled=False, label_visibility="visible"
     )                
     with st.expander("Revenue Settings", expanded=False):
         st.slider(
             'Deal Income ($/TiB/Yr)', 
             min_value=0.0, max_value=100.0, value=16.0, step=1.0, format='%0.02f', key="deal_income",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
     with st.expander("Cost Settings", expanded=False):
         st.slider(
             'Borrowing Costs (Pct. of Pledge)', 
             min_value=0.0, max_value=100.0, value=50.0, step=1.00, format='%0.02f', key="borrow_cost_pct",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'FIL+ Biz Dev Cost ($/TiB/Yr)', 
             min_value=1.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="filp_bizdev_cost",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'RD Biz Dev Cost ($/TiB/Yr)', 
             min_value=1.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="rd_bizdev_cost",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Data Prep Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=1.0, step=1.0, format='%0.02f', key="data_prep_cost",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'FIL+ Slashing Penalty ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=18.0, step=1.0, format='%0.02f', key="cheating_penalty",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Power+COLO Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="power_cost",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Bandwidth [10GBPS] Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="bw_cost",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Staff Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="staff_cost",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
+        st.slider(
+            'Sealing Cost ($/TiB/Yr)',
+            min_value=0.0, max_value=10.0, value=1.3, step=0.1, format='%0.02f', key="sealing_cost",
+            on_change=compute_costs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Gas Cost [PSD/FIL+] ($/TiB/Yr)',
+            min_value=0.0, max_value=10.0, value=1.3, step=0.1, format='%0.02f', key="psd_gas_cost",
+            on_change=compute_costs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Gas Cost [CC] ($/TiB/Yr)',
+            min_value=0.0, max_value=10.0, value=1.3, step=0.1, format='%0.02f', key="cc_gas_cost",
+            on_change=compute_costs, disabled=False, label_visibility="visible"
+        )
+        st.slider(
+            'Extra Copy Cost ($/TiB/Yr)',
+            min_value=0.0, max_value=30.0, value=7.0, step=0.1, format='%0.02f', key="extra_copy_cost",
+            on_change=compute_costs, disabled=False, label_visibility="visible"
+        )
+
     with st.expander("Multipliers", expanded=False):
         st.slider(
             'CC', min_value=1, max_value=20, value=1, step=1, key="cc_multiplier",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'RD', min_value=1, max_value=20, value=1, step=1, key="rd_multiplier",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
         st.slider(
             'FIL+', min_value=1, max_value=20, value=10, step=1, key="filp_multiplier",
-            on_change=compute_costs, kwargs=compute_costs_kwargs, disabled=False, label_visibility="visible"
+            on_change=compute_costs, disabled=False, label_visibility="visible"
         )
-    
-    st.button("Compute!", on_click=compute_costs, kwargs=compute_costs_kwargs, key="forecast_button")
+    # st.slider(
+    #     'Lock Target', min_value=0.05, max_value=0.50, value=0.3, step=0.01, key="lock_target",
+    #     on_change=run_simulation, disabled=False, label_visibility="visible"
+    # )
+    st.button("Compute!", on_click=compute_costs, key="forecast_button")
 
 if "debug_string" in st.session_state:
     st.markdown(

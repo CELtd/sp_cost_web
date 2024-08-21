@@ -28,14 +28,33 @@ def get_offline_data(start_date, current_date, end_date):
     smoothed_last_historical_rr = float(np.median(hist_rr[-30:]))
     smoothed_last_historical_fpr = float(np.median(hist_fpr[-30:]))
 
+    return {
+        'offline_data': offline_data,
+        'smoothed_last_historical_rbp': smoothed_last_historical_rbp,
+        'smoothed_last_historical_rr': smoothed_last_historical_rr,
+        'smoothed_last_historical_fpr': smoothed_last_historical_fpr,
+        'start_date': start_date,
+        'current_date': current_date,
+        'end_date': end_date
+    }
+
+
+def run_scenario_simulations(sim_info, lock_target=0.3):
+    start_date = sim_info['start_date']
+    current_date = sim_info['current_date']
+    end_date = sim_info['end_date']
+    smoothed_last_historical_rbp = sim_info['smoothed_last_historical_rbp']
+    smoothed_last_historical_rr = sim_info['smoothed_last_historical_rr']
+    smoothed_last_historical_fpr = sim_info['smoothed_last_historical_fpr']
+    offline_data = sim_info['offline_data']
+
     # run mechafil and compute expected block rewards. we only need to do this once
     scenarios = ['pessimistic', 'status-quo', 'optimistic']
     scenario_scalers = [0.5, 1.0, 1.5]
 
     forecast_length = (end_date-start_date).days
-    sector_duration = 365
-    lock_target = 0.3
-
+    sector_duration = 180
+    
     scenario2erpt = {}
     for ii, scenario_scaler in enumerate(scenario_scalers):    
         scenario = scenarios[ii]
@@ -68,14 +87,9 @@ def get_offline_data(start_date, current_date, end_date):
 
 def get_negligible_costs(bandwidth_10gbps_tib_per_yr):
     # Definitions (we can make these configurable later, potentially)
-    sealing_costs_tib_per_yr = 1.3
-
-    gas_cost_tib_per_yr = (2250.+108.)/1024.
-    gas_cost_without_psd_tib_per_yr = 108./1024.
     bandwidth_1gbps_tib_per_yr=bandwidth_10gbps_tib_per_yr/10.0
 
-    return sealing_costs_tib_per_yr, gas_cost_tib_per_yr, gas_cost_without_psd_tib_per_yr, bandwidth_1gbps_tib_per_yr
-
+    return bandwidth_1gbps_tib_per_yr
 
 def compute_costs(scenario2erpt=None, 
                   filp_multiplier=10, rd_multiplier=1, cc_multiplier=1,
@@ -86,11 +100,15 @@ def compute_costs(scenario2erpt=None,
                   data_prep_cost_tib_per_yr=1.0, penalty_tib_per_yr=0.0,
                   power_cost_tib_per_yr=6, 
                   bandwidth_10gbps_tib_per_yr=6, 
-                  staff_cost_tib_per_yr=10
+                  staff_cost_tib_per_yr=10,
+                  sealing_costs_tib_per_yr=1.3,
+                  gas_cost_tib_per_yr=2250./1024.0,
+                  gas_cost_without_psd_tib_per_yr=108./1024.0,
+                  extra_copy_cost_tib_per_yr=7.0
                   ):
     erpt = scenario2erpt[onboarding_scenario]
     
-    sealing_costs_tib_per_yr, gas_cost_tib_per_yr, gas_cost_without_psd_tib_per_yr, bandwidth_1gbps_tib_per_yr = get_negligible_costs(bandwidth_10gbps_tib_per_yr)
+    bandwidth_1gbps_tib_per_yr = get_negligible_costs(bandwidth_10gbps_tib_per_yr)
     
     # create a dataframe for each of the miner profiles
     filp_miner = {
@@ -105,7 +123,7 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
         'bd_cost': filp_bd_cost_tib_per_yr,
-        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.5,
+        'extra_copy_cost': extra_copy_cost_tib_per_yr,
         'cheating_cost': 0
     }
     rd_miner = {
@@ -120,7 +138,7 @@ def compute_costs(scenario2erpt=None,
         'sealing_cost': sealing_costs_tib_per_yr,
         'data_prep_cost': data_prep_cost_tib_per_yr,
         'bd_cost': rd_bd_cost_tib_per_yr,
-        'extra_copy_cost': (staff_cost_tib_per_yr+power_cost_tib_per_yr)*0.5,
+        'extra_copy_cost': extra_copy_cost_tib_per_yr,
         'cheating_cost': 0
     }
     filp_exploit_miner = {
