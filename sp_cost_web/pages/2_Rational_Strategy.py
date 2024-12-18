@@ -92,6 +92,8 @@ def generate_rankings(scenario2erpt=None):
     bw_cost_tib_per_yr = st.session_state['rs_bw_cost']
     staff_cost_tib_per_yr = st.session_state['rs_staff_cost']
 
+    scenario2erpt = st.session_state['scenario2erpt']
+
     # sweep borrowing_cost, fix other costs
     borrowing_cost_vec = np.linspace(0,100,25)
     borrowing_cost_plot_vec = []
@@ -184,79 +186,78 @@ mo_start = max(current_date.month - 1 % 12, 1)
 start_date = date(current_date.year, mo_start, 1)
 forecast_length_days=365*3
 end_date = current_date + timedelta(days=forecast_length_days)
-scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)  # should be cached
-kwargs = {
-    'scenario2erpt':scenario2erpt
-}
+offline_info = utils.get_offline_data(start_date, current_date, end_date)  # cached, should be quick
+scenario2erpt = utils.run_scenario_simulations(offline_info, lock_target=0.3)
+st.session_state['scenario2erpt'] = scenario2erpt
 
 with st.sidebar:
     st.slider(
         "FIL Exchange Rate ($/FIL)", 
         min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="rs_filprice_slider",
-        on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=generate_rankings, disabled=False, label_visibility="visible"
     )
     st.selectbox(
         'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="rs_onboarding_scenario",
-        on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=generate_rankings, disabled=False, label_visibility="visible"
     )
     with st.expander("Revenue Settings", expanded=False):
         st.slider(
             'Deal Income ($/TiB/Yr)', 
             min_value=0.0, max_value=100.0, value=16.0, step=1.0, format='%0.02f', key="rs_deal_income",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
     with st.expander("Cost Settings", expanded=False):
         st.slider(
             'Borrowing Costs (Pct. of Pledge)', 
             min_value=0.0, max_value=100.0, value=50.0, step=1.00, format='%0.02f', key="rs_borrow_cost_pct",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'FIL+ Biz Dev Cost ($/TiB/Yr)', 
             min_value=1.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="rs_filp_bizdev_cost",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'RD Biz Dev Cost ($/TiB/Yr)', 
             min_value=1.0, max_value=50.0, value=3.2, step=1.0, format='%0.02f', key="rs_rd_bizdev_cost",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Data Prep Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=1.0, step=1.0, format='%0.02f', key="rs_data_prep_cost",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Cheating Penalty ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=18.0, step=1.0, format='%0.02f', key="rs_cheating_penalty",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Power+COLO Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="rs_power_cost",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Bandwidth [10GBPS] Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=6.0, step=1.0, format='%0.02f', key="rs_bw_cost",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'Staff Cost ($/TiB/Yr)', 
             min_value=0.0, max_value=50.0, value=8.0, step=1.0, format='%0.02f', key="rs_staff_cost",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
     with st.expander("Multipliers", expanded=False):
         st.slider(
             'CC', min_value=1, max_value=20, value=1, step=1, key="rs_cc_multiplier",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'RD', min_value=1, max_value=20, value=1, step=1, key="rs_rd_multiplier",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
         st.slider(
             'FIL+', min_value=1, max_value=20, value=10, step=1, key="rs_filp_multiplier",
-            on_change=generate_rankings, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=generate_rankings, disabled=False, label_visibility="visible"
         )
-    st.button("Compute!", on_click=generate_rankings, kwargs=kwargs, key="forecast_button")
+    st.button("Compute!", on_click=generate_rankings, key="forecast_button")

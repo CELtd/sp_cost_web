@@ -56,8 +56,6 @@ def compute_costs():
     cc_gas_cost = st.session_state['cc_gas_cost']
     extra_copy_cost = st.session_state['extra_copy_cost']
 
-    if 'scenario2erpt' not in st.session_state:
-        run_simulation()
     scenario2erpt = st.session_state['scenario2erpt']
 
     df = utils.compute_costs(
@@ -149,20 +147,6 @@ end_date = current_date + timedelta(days=forecast_length_days)
 offline_info = utils.get_offline_data(start_date, current_date, end_date)  # cached, should be quick
 scenario2erpt = utils.run_scenario_simulations(offline_info, lock_target=0.3)
 st.session_state['scenario2erpt'] = scenario2erpt
-# compute_costs_kwargs = {
-#     'scenario2erpt':scenario2erpt
-# }
-# def run_simulation():
-#     lock_target = 0.3
-#     offline_info = utils.get_offline_data(start_date, current_date, end_date)  # cached, should be quick
-#     scenario2erpt = utils.run_scenario_simulations(offline_info, lock_target=lock_target)
-#     # compute_costs_kwargs = {
-#     #     'scenario2erpt':scenario2erpt
-#     # }
-#     st.session_state['scenario2erpt'] = scenario2erpt
-#     compute_costs()
-
-# run_simulation()
 
 with st.sidebar:
     st.slider(
@@ -255,10 +239,7 @@ with st.sidebar:
             'FIL+', min_value=1, max_value=20, value=10, step=1, key="filp_multiplier",
             on_change=compute_costs, disabled=False, label_visibility="visible"
         )
-    # st.slider(
-    #     'Lock Target', min_value=0.05, max_value=0.50, value=0.3, step=0.01, key="lock_target",
-    #     on_change=run_simulation, disabled=False, label_visibility="visible"
-    # )
+    
     st.button("Compute!", on_click=compute_costs, key="forecast_button")
 
 if "debug_string" in st.session_state:

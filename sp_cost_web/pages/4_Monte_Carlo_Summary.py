@@ -103,7 +103,7 @@ def plot_rankings(strategy2ranking, filp_profile):
     )
     st.altair_chart(cch, use_container_width=True)
 
-def run_mc_sim(scenario2erpt=None):
+def run_mc_sim():
     n_samples = 1000  # TODO: revisit
 
     exchange_rate = st.session_state['mc_filprice_slider']
@@ -148,6 +148,7 @@ def run_mc_sim(scenario2erpt=None):
 
     borrowing_cost = st.session_state['mc_borrow_cost_pct']/100.0
 
+    scenario2erpt = st.session_state['scenario2erpt']
     strategy2ranking = {}
     for _, row in filp_profile.iterrows():
         cost_df = utils.compute_costs(
@@ -181,86 +182,86 @@ mo_start = max(current_date.month - 1 % 12, 1)
 start_date = date(current_date.year, mo_start, 1)
 forecast_length_days=365*3
 end_date = current_date + timedelta(days=forecast_length_days)
-scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)  # should be cached
-kwargs = {
-    'scenario2erpt':scenario2erpt
-}
+offline_info = utils.get_offline_data(start_date, current_date, end_date)  # cached, should be quick
+scenario2erpt = utils.run_scenario_simulations(offline_info, lock_target=0.3)
+st.session_state['scenario2erpt'] = scenario2erpt
+
 
 with st.sidebar:
     st.slider(
         "FIL Exchange Rate ($/FIL)", 
         min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="mc_filprice_slider",
-        on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=run_mc_sim, disabled=False, label_visibility="visible"
     )
     st.selectbox(
         'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="mc_onboarding_scenario",
-        on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=run_mc_sim, disabled=False, label_visibility="visible"
     )
     st.slider(
         'Borrowing Costs (Pct. of Pledge)', 
         min_value=0.0, max_value=100.0, value=50.0, step=1.00, format='%0.02f', key="mc_borrow_cost_pct",
-        on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=run_mc_sim, disabled=False, label_visibility="visible"
     )
 
     with st.expander("Distribution Settings", expanded=False):
         st.slider(
             "Mean Client Fees", 
             min_value=1.0, max_value=40., value=16.0, step=.1, format='%0.02f', key="mc_deal_income",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Mean Staff Fees", 
             min_value=1.0, max_value=50., value=16.0, step=.1, format='%0.02f', key="mc_staff",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Mean Data Prep", 
             min_value=0.1, max_value=50., value=2.0, step=.1, format='%0.02f', key="mc_data_prep",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Mean Biz Dev", 
             min_value=1.0, max_value=50.0, value=16.0, step=.1, format='%0.02f', key="mc_bizdev",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Mean Extra Copy", 
             min_value=0.1, max_value=50., value=14.0, step=.1, format='%0.02f', key="mc_extracopy",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Mean Bandwidth", 
             min_value=0.1, max_value=50., value=12.0, step=.1, format='%0.02f', key="mc_bw",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Mean Power+COLO", 
             min_value=0.1, max_value=50., value=12.0, step=.1, format='%0.02f', key="mc_power",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Mean FIL+ Slashing Fees",
             min_value=0.1, max_value=50., value=0.1, step=.1, format='%0.02f', key="mc_slashing",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             "Gamma Rate [all] (Beta)", 
             min_value=0.1, max_value=10., value=2.0, step=.1, format='%0.02f', key="gamma_beta",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         
     
     with st.expander("Multipliers", expanded=False):
         st.slider(
             'CC', min_value=1, max_value=20, value=1, step=1, key="mc_cc_multiplier",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             'RD', min_value=1, max_value=20, value=1, step=1, key="mc_rd_multiplier",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
         st.slider(
             'FIL+', min_value=1, max_value=20, value=10, step=1, key="mc_filp_multiplier",
-            on_change=run_mc_sim, kwargs=kwargs, disabled=False, label_visibility="visible"
+            on_change=run_mc_sim, disabled=False, label_visibility="visible"
         )
-    st.button("Compute!", on_click=run_mc_sim, kwargs=kwargs, key="forecast_button")
+    st.button("Compute!", on_click=run_mc_sim, key="forecast_button")

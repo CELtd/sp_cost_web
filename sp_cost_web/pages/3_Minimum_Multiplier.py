@@ -60,13 +60,14 @@ def generate_plots(minimum_m_sweep_exchangerate_df, minimum_m_sweep_dealincome_d
     )
     st.altair_chart(c2, use_container_width=True)
 
-def compute_minimum_multiplier(scenario2erpt=None):
+def compute_minimum_multiplier():
     exchange_rate_cfg =  st.session_state['mm_filprice_slider']
     onboarding_scenario = st.session_state['mm_onboarding_scenario'].lower()
     deal_income = st.session_state['mm_deal_income']
     cc_cost = st.session_state['mm_cc_cost']
     deal_cost_multiplier = st.session_state['mm_deal_cost_multiplier']
 
+    scenario2erpt = st.session_state['scenario2erpt']
     erpt = scenario2erpt[onboarding_scenario]
 
     # sweep across a) exchange rate
@@ -120,34 +121,33 @@ mo_start = max(current_date.month - 1 % 12, 1)
 start_date = date(current_date.year, mo_start, 1)
 forecast_length_days=365*3
 end_date = current_date + timedelta(days=forecast_length_days)
-scenario2erpt = utils.get_offline_data(start_date, current_date, end_date)  # should be cached
-kwargs = {
-    'scenario2erpt':scenario2erpt
-}
+offline_info = utils.get_offline_data(start_date, current_date, end_date)  # cached, should be quick
+scenario2erpt = utils.run_scenario_simulations(offline_info, lock_target=0.3)
+st.session_state['scenario2erpt'] = scenario2erpt
 
 with st.sidebar:
     st.slider(
         "FIL Exchange Rate ($/FIL)", 
         min_value=3., max_value=50., value=4.0, step=.1, format='%0.02f', key="mm_filprice_slider",
-        on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=compute_minimum_multiplier, disabled=False, label_visibility="visible"
     )
     st.selectbox(
         'Onboarding Scenario', ('Status-Quo', 'Pessimistic', 'Optimistic'), key="mm_onboarding_scenario",
-        on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=compute_minimum_multiplier, disabled=False, label_visibility="visible"
     )
     st.slider(
         'Deal Income ($/TiB/Yr)', 
         min_value=0.0, max_value=100.0, value=16.0, step=1.0, format='%0.02f', key="mm_deal_income",
-        on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=compute_minimum_multiplier, disabled=False, label_visibility="visible"
     )
     st.slider(
         'CC Sector Cost ($/TiB/Yr)', 
         min_value=0.0, max_value=100.0, value=30.0, step=1.0, format='%0.02f', key="mm_cc_cost",
-        on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=compute_minimum_multiplier, disabled=False, label_visibility="visible"
     )
     st.slider(
         'Deal Sector Cost Multiplier (X)', 
         min_value=1.0, max_value=10.0, value=4.0, step=1.0, format='%0.02f', key="mm_deal_cost_multiplier",
-        on_change=compute_minimum_multiplier, kwargs=kwargs, disabled=False, label_visibility="visible"
+        on_change=compute_minimum_multiplier, disabled=False, label_visibility="visible"
     )
-    st.button("Compute!", on_click=compute_minimum_multiplier, kwargs=kwargs, key="forecast_button")
+    st.button("Compute!", on_click=compute_minimum_multiplier, key="forecast_button")
