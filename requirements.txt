@@ -4,7 +4,7 @@ altair
 watchdog
 jax==0.4.23
 jaxlib==0.4.23
-numpyro
+numpyro==0.13.2
 numpy==1.26.4
 scipy
 matplotlib
