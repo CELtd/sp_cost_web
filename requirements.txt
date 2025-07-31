@@ -6,7 +6,7 @@ jax==0.4.23
 jaxlib==0.4.23
 numpyro==0.13.2
 numpy==1.26.4
-scipy
+scipy==1.11.4
 matplotlib
 mechafil-jax @ git+https://github.com/protocol/mechafil-jax.git
 scenario-generator @ git+https://github.com/protocol/scenario-generator.git
