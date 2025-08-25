@@ -146,7 +146,7 @@ def run_mc_sim():
         'slashing': slashing
     })
 
-    borrowing_cost = st.session_state['mc_borrow_cost_pct']/100.0
+    borrowing_cost = st.session_state['mc_borrow_cost_pct'] / 100.0
 
     scenario2erpt = st.session_state['scenario2erpt']
     strategy2ranking = {}
