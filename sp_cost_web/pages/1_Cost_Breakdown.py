@@ -130,14 +130,15 @@ def plot_costs(df):
     )
     st.altair_chart((chart1+chart2).properties(height=500).configure_axis(labelFontSize=20, titleFontSize=20).resolve_scale(color='independent')+vline, use_container_width=True)
 
-    # NOTE: not sure why formatting is not working
-    format_mapping = {}
-    for c in df.columns:
-        if c != 'SP Type':
-            format_mapping[c] = "{:.2f}"
-    formatted_df = df.T.style.format(format_mapping)
     st.markdown("###### Cost Breakdown Table")
-    st.write(formatted_df)
+    # Use st.dataframe instead of st.write with styled DataFrame to avoid PyArrow issues
+    display_df = df.copy()
+    # Round numeric columns for display
+    for col in display_df.columns:
+        if col != 'SP Type':
+            display_df[col] = display_df[col].round(2)
+    
+    st.dataframe(display_df, use_container_width=True)
 
 current_date = date.today() - timedelta(days=3)
 mo_start = max(current_date.month - 1 % 12, 1)
