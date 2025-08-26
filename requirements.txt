@@ -1,13 +1,13 @@
-pandas==1.5.3
+pandas==2.3.1
 streamlit
 altair
 watchdog
-jax==0.4.23
-jaxlib==0.4.23
-numpyro==0.13.2
-numpy==1.26.4
-scipy==1.11.4
+jax==0.7.0
+jaxlib==0.7.0
+numpyro==0.19.0
+numpy==2.3.2
+scipy
 matplotlib
-mechafil-jax @ git+https://github.com/protocol/mechafil-jax.git
-scenario-generator @ git+https://github.com/protocol/scenario-generator.git
+scenario-generator @ git+https://github.com/celtd/scenario-generator.git
+mechafil-jax @ git+https://github.com/celtd/mechafil-jax.git
 slack_sdk
