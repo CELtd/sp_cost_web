@@ -1,9 +1,12 @@
 #!/bin/bash
 
-gcloud builds submit --tag gcr.io/cel-streamlit/sp-cost-web
+PROJECT=cel-streamlit
+
+gcloud builds submit --tag gcr.io/$PROJECT/sp-cost-web --project $PROJECT
 
 gcloud run deploy sp-cost-web \
-  --image gcr.io/cel-streamlit/sp-cost-web \
+  --image gcr.io/$PROJECT/sp-cost-web \
+  --project $PROJECT \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \

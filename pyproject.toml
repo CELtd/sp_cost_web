@@ -1,0 +1,23 @@
+[project]
+name = "sp-cost-web"
+version = "0.1.0"
+description = "SP Cost Explorer - Streamlit web application"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas==2.3.1",
+    "streamlit",
+    "altair",
+    "watchdog",
+    "jax==0.7.0",
+    "jaxlib==0.7.0",
+    "numpyro==0.19.0",
+    "numpy==2.3.2",
+    "scipy",
+    "matplotlib",
+    "scenario-generator @ git+https://github.com/celtd/scenario-generator.git",
+    "mechafil-jax @ git+https://github.com/celtd/mechafil-jax.git",
+    "slack_sdk",
+]
+
+[tool.uv]
+package = false
